@@ -54,3 +54,4 @@ obj(MyFossilModel) {pos: 0.0, 10.0, 0.0; rot: 0, 90, 0; size: 2.0; dur: 3; ease-
 
 - Yoshioka et al. (2025) *Proc. Symp. Soc. Sci. Form Jpn.*, 10(1).
 - Yoshioka & Takahei (2025) *Annu. Conf. Soc. Jpn. Sci. Teach.*, (25).
+- [Yoshioka (2026) *IPS 2026 Fukuoka*, PO2-10](https://pub.confit.atlas.jp/en/event/ips2026/presentation/PO2-10). [coming soon!!]
