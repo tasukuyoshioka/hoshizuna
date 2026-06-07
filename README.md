@@ -46,7 +46,8 @@ obj(MyFossilModel) {pos: 0.0, 10.0, 0.0; rot: 0, 90, 0; size: 2.0; dur: 3; ease-
 
 ## Update History / Changelog
 
-- **v1.17 (June 2026)**: Added the ability to save and load command scripts (`.txt`) locally, and English language supported. Hosted on GitHub.
+- **v1.68 (June 2026)**: Added background animations, color and opacity settings in the terminal, and gamepad support.
+- **v1.67 (June 2026)**: Added the ability to save and load command scripts (`.txt`) locally, and English language supported. Hosted on GitHub.
 - **v1.00 (May 2025)**: Initial release (hosted on [tsm.toyama.toyama.jp](https://www.tsm.toyama.toyama.jp/_ex/curators/yoshioka/ModelViewer4Dome/))
 
 
