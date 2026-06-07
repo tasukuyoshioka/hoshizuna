@@ -30,7 +30,7 @@ A lightweight, browser-based 3D model viewer designed for projecting 3D models i
 The built-in Terminal interprets instructions line by line. Blank lines and lines starting with `//` or `#` are ignored.
 
 ### Example Script:
-```text
+```
 // Move camera and adjust tilt instantly
 pos: 0.00, 0.00, 50.00; rot: 0.0, 0.0, 0.0; tilt: 0.0, 0.0;
 
@@ -42,5 +42,15 @@ pause: 2;
 
 // Transform a specific loaded model smoothly
 obj(MyFossilModel) {pos: 0.0, 10.0, 0.0; rot: 0, 90, 0; size: 2.0; dur: 3; ease-out;}
+```
+
+## Update History / Changelog
+
+- **v1.17 (June 2026)**: Added the ability to save and load command scripts (`.txt`) locally, and English language supported. Hosted on GitHub.
+- **v1.00 (May 2025)**: Initial release (hosted on [tsm.toyama.toyama.jp](https://www.tsm.toyama.toyama.jp/_ex/curators/yoshioka/ModelViewer4Dome/))
 
 
+## Related Presentations & Publications
+
+- Yoshioka et al. (2025) *Proc. Symp. Soc. Sci. Form Jpn.*, 10(1).
+- Yoshioka & Takahei (2025) *Annu. Conf. Soc. Jpn. Sci. Teach.*, (25).
