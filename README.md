@@ -8,13 +8,13 @@ A lightweight, browser-based 3D model viewer designed for projecting 3D models i
 
 ## Features
 
-- **Format Support:** Load 3D models in STL, OBJ (geometry only), or SVG formats directly from your local drive.
+- **Format Support:** Load 3D models in STL, OBJ (with vertex colors), or SVG (limited support) formats directly from your local drive.
 - **Dome View (Dome Master):** Opens a separate child window in dome master format. Displaying this window in full screen allows projection across the entire dome screen.
 - **Control Modes:**
   - **Orbit Mode:** Rotate and pan the camera angle around the model using the mouse.
   - **Fly Mode:** Freely move through the 3D space using keyboard shortcuts (`W`, `A`, `S`, `D`, `Q`, `E`, `R`, `F`, and arrow keys).
 - **Environment Editing:** Customize background colors, equirectangular background images, ambient/directional/hemisphere lights, and output resolution.
-- **Terminal (Commander):** Automated animation playback based on sequential or parallel command queues (camera coordinates, rotation, easing, pause, and object transformations).
+- **Terminal:** Automated animation playback based on sequential or parallel command queues (camera coordinates, rotation, easing, pause, and object transformations).
 - **Video Recording:** Record and export your automated command sequences as `.webm` videos directly from the browser.
 
 ## How to Use
@@ -23,7 +23,7 @@ A lightweight, browser-based 3D model viewer designed for projecting 3D models i
 2. **Add a Model:** Click the **"Add Model"**  button and select your 3D file.
 3. **Adjust Environment:** Click **"Env Edit"** to set up background stars (equirectangular images) or lighting conditions.
 4. **Open Dome View:** Click **"Dome View"** to open the dome master window. Move this window to your planetarium's external video input and make it full screen.
-5. **Animate (Optional):** Open the **"Terminal"**, paste your script queues, and hit the play button to start the presentation.
+5. **Animate:** Open the **"Terminal"**, paste your script queues, and hit the play button to start the presentation.
 
 ## Command Scripting (Terminal)
 
@@ -46,6 +46,7 @@ obj(MyFossilModel) {pos: 0.0, 10.0, 0.0; rot: 0, 90, 0; size: 2.0; dur: 3; ease-
 
 ## Update History / Changelog
 
+- **v1.69 (June 2026)**: Fixed control issues when multiple gamepads are connected.
 - **v1.68 (June 2026)**: Added background animations, color and opacity settings in the terminal, and gamepad support.
 - **v1.67 (June 2026)**: Added the ability to save and load command scripts (`.txt`) locally, and English language supported. Hosted on GitHub.
 - **v1.00 (May 2025)**: Initial release (hosted on [tsm.toyama.toyama.jp](https://www.tsm.toyama.toyama.jp/_ex/curators/yoshioka/ModelViewer4Dome/))
