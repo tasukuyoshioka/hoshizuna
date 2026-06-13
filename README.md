@@ -45,7 +45,7 @@ obj(MyFossilModel) {pos: 0.0, 10.0, 0.0; rot: 0, 90, 0; size: 2.0; dur: 3; ease-
 ```
 
 ## Update History / Changelog
-
+- **v1.70 (June 2026)**: Fix gamepad controls and make UI mobile-friendly.
 - **v1.69 (June 2026)**: Fixed control issues when multiple gamepads are connected.
 - **v1.68 (June 2026)**: Added background animations, color and opacity settings in the terminal, and gamepad support.
 - **v1.67 (June 2026)**: Added the ability to save and load command scripts (`.txt`) locally, and English language supported. Hosted on GitHub.
