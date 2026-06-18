@@ -8,7 +8,7 @@ A lightweight, browser-based 3D model viewer designed for projecting 3D models i
 
 ## Features
 
-- **Format Support:** Load 3D models in STL, OBJ (with vertex colors), or SVG (limited support) formats directly from your local drive.
+- **Format Support:** Load 3D models directly from your local drive in STL format, with partial support for OBJ and SVG.
 - **Dome View (Dome Master):** Opens a separate child window in dome master format. Displaying this window in full screen allows projection across the entire dome screen.
 - **Control Modes:**
   - **Orbit Mode:** Rotate and pan the camera angle around the model using the mouse.
@@ -45,6 +45,7 @@ obj(MyFossilModel) {pos: 0.0, 10.0, 0.0; rot: 0, 90, 0; size: 2.0; dur: 3; ease-
 ```
 
 ## Update History / Changelog
+- **v1.72 (June 2026)**: Enabled Screen Wake Lock API.
 - **v1.71 (June 2026)**: Added tilt adjustment with gamepads.
 - **v1.70 (June 2026)**: Fixed gamepad controls and make UI mobile-friendly.
 - **v1.69 (June 2026)**: Fixed control issues when multiple gamepads are connected.
