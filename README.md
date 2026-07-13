@@ -45,6 +45,7 @@ obj(MyFossilModel) {pos: 0.0, 10.0, 0.0; rot: 0, 90, 0; size: 2.0; dur: 3; ease-
 ```
 
 ## Update History / Changelog
+- **v1.73 (July 2026)**: Update the Model Edit feature.
 - **v1.72 (June 2026)**: Enabled Screen Wake Lock API.
 - **v1.71 (June 2026)**: Added tilt adjustment with gamepads.
 - **v1.70 (June 2026)**: Fixed gamepad controls and make UI mobile-friendly.
