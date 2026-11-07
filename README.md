@@ -8,7 +8,7 @@ A lightweight, browser-based 3D model viewer designed for projecting 3D models i
 
 ## Features
 
-- **Format Support:** Load 3D models directly from your local drive in STL format, with partial support for OBJ and SVG.
+- **Format Support:** Load 3D models directly from your local drive in STL, OBJ, SVG, GLB/glTF (.glb/.gltf), and 3D Gaussian Splatting (.ply/.splat) formats.
 - **Dome View (Dome Master):** Opens a separate child window in dome master format. Displaying this window in full screen allows projection across the entire dome screen.
 - **Control Modes:**
   - **Orbit Mode:** Rotate and pan the camera angle around the model using the mouse.
@@ -45,6 +45,7 @@ obj(MyFossilModel) {pos: 0.0, 10.0, 0.0; rot: 0, 90, 0; size: 2.0; dur: 3; ease-
 ```
 
 ## Update History / Changelog
+- **v1.75 (Nov. 2026)**: Added an outer-edge mask and new projection modes for Dome View, along with support for GLB/glTF (.glb/.gltf) and 3D Gaussian Splatting (.ply/.splat) files.
 - **v1.73 (July 2026)**: Update the Model Edit feature.
 - **v1.72 (June 2026)**: Enabled Screen Wake Lock API.
 - **v1.71 (June 2026)**: Added tilt adjustment with gamepads.
@@ -59,4 +60,5 @@ obj(MyFossilModel) {pos: 0.0, 10.0, 0.0; rot: 0, 90, 0; size: 2.0; dur: 3; ease-
 
 - Yoshioka et al. (2025) *Proc. Symp. Soc. Sci. Form Jpn.*, 10(1).
 - Yoshioka & Takahei (2025) *Annu. Conf. Soc. Jpn. Sci. Teach.*, (25).
-- [Yoshioka (2026) *IPS 2026 Fukuoka*, PO2-10](https://pub.confit.atlas.jp/en/event/ips2026/presentation/PO2-10). 
+- [Yoshioka (2026) *IPS 2026 Fukuoka*, PO2-10](https://pub.confit.atlas.jp/en/event/ips2026/presentation/PO2-10).
+- [Yoshioka (2026) *Virtual Conference 2026*](https://www.vconf.org/2026/poster-list/?filter_mvfbduq9_mo2ftf=C&filter_mw5ncj6q_4mpog8=3#presentation-70).
