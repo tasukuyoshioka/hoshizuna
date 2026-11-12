@@ -8,7 +8,7 @@ A lightweight, browser-based 3D model viewer designed for projecting 3D models i
 
 ## Features
 
-- **Format Support:** Load 3D models directly from your local drive in STL, OBJ, SVG, GLB/glTF (.glb/.gltf), and 3D Gaussian Splatting (.ply/.splat) formats.
+- **Format Support:** Load 3D models directly from your local drive in STL, OBJ, SVG, GLB/glTF (.glb/.gltf), and 3D Gaussian Splatting (.ply/.splat) formats, as well as volume data in DICOM and headerless RAW formats.
 - **Dome View (Dome Master):** Opens a separate child window in dome master format. Displaying this window in full screen allows projection across the entire dome screen.
 - **Control Modes:**
   - **Orbit Mode:** Rotate and pan the camera angle around the model using the mouse.
