@@ -44,14 +44,10 @@ pause: 2;
 obj(MyFossilModel) {pos: 0.0, 10.0, 0.0; rot: 0, 90, 0; size: 2.0; dur: 3; ease-out;}
 ```
 
-## Update History / Changelog
+## Update History
 - **v1.76 (Nov. 2026)**: Added support for DICOM and headerless RAW volume data.
 - **v1.75 (Nov. 2026)**: Added an outer-edge mask and new projection modes for Dome View, along with support for GLB/glTF (.glb/.gltf) and 3D Gaussian Splatting (.ply/.splat) files.
-- **v1.73 (July 2026)**: Update the Model Edit feature.
-- **v1.72 (June 2026)**: Enabled Screen Wake Lock API.
 - **v1.71 (June 2026)**: Added tilt adjustment with gamepads.
-- **v1.70 (June 2026)**: Fixed gamepad controls and make UI mobile-friendly.
-- **v1.69 (June 2026)**: Fixed control issues when multiple gamepads are connected.
 - **v1.68 (June 2026)**: Added background animations, color and opacity settings in the terminal, and gamepad support.
 - **v1.67 (June 2026)**: Added the ability to save and load command scripts (`.txt`) locally, and English language supported. Hosted on GitHub.
 - **v1.00 (May 2025)**: Initial release (hosted on [tsm.toyama.toyama.jp](https://www.tsm.toyama.toyama.jp/_ex/curators/yoshioka/ModelViewer4Dome/))
