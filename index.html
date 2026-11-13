@@ -1286,7 +1286,7 @@ body.lang-ja .lang-en { display: none !important; }
     </script>
 
     <div id="controls">
-        <input type="file" id="stlFile" accept=".stl, .obj, .svg, .glb, .gltf, .splat, .ply, .hvol">
+        <input type="file" id="stlFile" accept=".stl, .obj, .svg, .glb, .gltf, .splat, .ply, .hvol, .png, .jpg, .jpeg">
         <button id="addModelButton" data-i18n="addModel" type="button">モデルを追加</button>
         <input type="file" id="ctFolderInput" webkitdirectory multiple accept=".dcm,.ima,.dicom,.raw">
         <button id="openChildWindowButton" data-i18n="domeView">ドームビュー</button>
@@ -1813,6 +1813,8 @@ body.lang-ja .lang-en { display: none !important; }
                     <option value="4" data-i18n="opt_cube_net">6方向画像の展開表示 (Cube Net)</option>
                     <option value="5" data-i18n="opt_equirect_2to1">エクイレクタングラー（アスペクト比2:1）</option>
                     <option value="6" data-i18n="opt_equirect_screen">エクイレクタングラー（アスペクト比画面に合わせる）</option>
+                    <option value="10" data-i18n="opt_equirect_upper">上半球エクイレクタングラー（4:1）</option>
+                    <option value="11" data-i18n="opt_equirect_upper_screen">上半球エクイレクタングラー（画面比率）</option>
                     <option value="7" data-i18n="opt_perspective_main">透視投影（メイン画面と同等）</option>
                     <option value="8" data-i18n="opt_perspective_wide">透視投影（メイン画面より広角）</option>
                     <option value="9" data-i18n="opt_dome_overview">ドーム投影の空間プレビュー (Dome Preview)</option>
@@ -1867,7 +1869,7 @@ body.lang-ja .lang-en { display: none !important; }
             <p>ブラウザで高速にレンダリングさせるため、ブラウザのGPUアクセラレータを有効にしておくことをお勧めします。処理能力の低い端末で利用した際や、解像度を上げた場合、サイズの大きなファイルを読み込んだ場合など、動作しずらくなることがあります。</p>
             <h4>モデルの追加</h4>
             <ul>
-                <li>「モデルを追加」→「3Dモデル」からSTL/OBJ/SVG/GLB/glTF形式のモデル、または3D Gaussian Splatting形式の .splat / .ply を選択して読み込みます。
+                <li>「モデルを追加」→「3Dモデル・画像」からSTL/OBJ/SVG/GLB/glTF形式のモデル、JPEG/PNG画像、または3D Gaussian Splatting形式の .splat / .ply を選択して読み込みます。
                 複数のオブジェクトを含むOBJファイルにも対応しますが、OBJファイルが参照する外部MTLファイルやテクスチャファイルは読み込みません。
                 GLB/glTFは外部ファイル参照を含まない形式に対応し、Draco・Meshopt・BasisUの圧縮拡張には対応しません。
                 3DGSのPLYはGraphDECO形式に対応し、.ksplat/.spzなどの圧縮形式には対応しません。ファイル選択はひとつずつですが、後で追加することができます。
@@ -1890,14 +1892,15 @@ body.lang-ja .lang-en { display: none !important; }
              <ul>
                  <li>表示中の3Dモデルを選択し、座標位置や回転、サイズ、色などを個々に調整できます。</li>
                  <li>選択したモデルは削除ボタンで削除できます。</li>
-                <li>SVGは文字や元の色、透過部分を保持した平面として読み込みます。独自フォントや外部参照画像は環境によって表示されない場合があります。</li>
+                <li>SVG/JPEG/PNGは縦横比を保った平面テクスチャとして読み込みます。SVGとPNGの透過部分は保持します。SVGの独自フォントや外部参照画像は環境によって表示されない場合があります。</li>
+                <li>頂点カラー付きOBJ・GLB/glTFの色を変更するには、「表示」タブで「オリジナルの色を使う」をオフにし、「モデルの色」を指定します。再びオンにすると元の色が復元されます。GLB/glTFでは画像の透過情報と材質の光沢などは保持されます。</li>
                 <li>CTの「表示」タブでは、読み込み済み8ビット密度分布のヒストグラムを見ながら、下限・上限を指定できます。境界線は直接ドラッグ可能です。ISOでは上限1.00で従来の下限等値面を表示し、上限を下げると上下限の密度境界面を表示します。Hybridでは密度範囲は内部DVRに適用され、表面の密度は独立指定です。「標準（青→黄）」の色の位置は選択した密度範囲内の割合で設定でき、上下限を変えても相対位置を維持します。</li>
                  <li>「表示」タブでは、コマンダでアニメーションできる設定（モデル色・透明度）と、非対応の表示設定を分けています。copyボタンはコマンダ対応項目をコピーします。元の配色を使っている場合は透明度だけをコピーします。CTの描画方式・伝達関数・密度範囲・断面設定などは現時点ではコマンダで操作できません。見え方を先に調整し、透明度や座標・回転で演出してください。</li>
              </ul>
 
             <h4>ドームビュー</h4>
             <ul>
-                <li>子ウィンドウでドームマスター形式のほか、6方向画像の展開表示、エクイレクタングラー、透視投影、ドーム空間プレビューを表示できます。プラネタリウムへ投影する場合はドームマスター形式を選び、外部映像入力に全画面表示してください。</li>
+                <li>子ウィンドウでドームマスター形式のほか、6方向画像の展開表示、全球および上半球のエクイレクタングラー、透視投影、ドーム空間プレビューを表示できます。上半球エクイレクタングラーは水平360°・高度0～90°を展開し、4:1固定または画面のアスペクト比に合わせた出力を選べます。プラネタリウムへ投影する場合は、対応する射影方式を選び、外部映像入力に全画面表示してください。</li>
             </ul>
              <h4>チルトコントロール（コントロール画面左下）</h4>
              <ul>
@@ -1931,11 +1934,11 @@ body.lang-ja .lang-en { display: none !important; }
                    </ul>
                  </li>
                  <li><strong>ポーズ</strong>：「pause:0.00」の表記で記述します（単位は秒）。時間を表記しない場合は一時停止します。</li>
-                 <li><strong>チルト</strong>：「tilt: 0.00, 0.00」の表記で記述します（単位はいずれも度）。それぞれ上下チルト、左右チルトを表します。「;」で区切ってアニメーション時間とイージングをセットで記述できます。例: `tilt: 30, 45; dur: 2; ease-in-out;`</li>
+                 <li><strong>チルト</strong>：「tilt: 0.00, 0.00」の表記で記述します（単位はいずれも度）。それぞれ上下チルト、左右チルトを表します。「;」で区切ってカメラ座標・姿勢、アニメーション時間、イージングと1行にまとめられます。例: `pos: 0, 0, 50; rot: 0, 0, 0; tilt: 30, 45; dur: 2; ease-in-out;`</li>
                  </ul>
                  </li>
              </ul>
-             <p class="copyright"><a href="https://github.com/tasukuyoshioka/hoshizuna" target="_blank">Hoshizuna: Model Viewer for Dome</a> v1.76 | (c) <a href="https://researchmap.jp/estherian" target="_blank">Tasuku Yoshioka</a> (<a href="https://www.tsm.toyama.toyama.jp/" target="_blank">Toyama Science Museum</a>), 2025-2026 | Released under the <a href="https://opensource.org/license/mit" target="_blank">MIT license</a>.</p>
+             <p class="copyright"><a href="https://github.com/tasukuyoshioka/hoshizuna" target="_blank">Hoshizuna: Model Viewer for Dome</a> v1.77 | (c) <a href="https://researchmap.jp/estherian" target="_blank">Tasuku Yoshioka</a> (<a href="https://www.tsm.toyama.toyama.jp/" target="_blank">Toyama Science Museum</a>), 2025-2026 | Released under the <a href="https://opensource.org/license/mit" target="_blank">MIT license</a>.</p>
             
          </div>
 
@@ -1953,7 +1956,7 @@ body.lang-ja .lang-en { display: none !important; }
             <p>We recommend enabling hardware (GPU) acceleration in your browser to ensure high-speed rendering. Performance may degrade or stutter on lower-spec devices, when increasing the resolution, or when loading large files.</p>
             <h4>Adding Models</h4>
             <ul>
-                <li>Click "Add Model" > "3D Model" to load STL, OBJ, SVG, GLB, glTF, or 3D Gaussian Splatting files (.splat or .ply).
+                <li>Click "Add Model" > "3D Model / Image" to load STL, OBJ, SVG, JPEG/PNG, GLB, glTF, or 3D Gaussian Splatting files (.splat or .ply).
                 OBJ files with multiple objects are supported, but external MTL and texture files referenced by OBJ files are not loaded.
                 GLB/glTF files must be self-contained; Draco, Meshopt, and BasisU compression extensions are not supported.
                 For 3DGS, PLY support is limited to the GraphDECO format; compressed formats such as .ksplat and .spz are not supported.
@@ -1977,14 +1980,15 @@ body.lang-ja .lang-en { display: none !important; }
              <ul>
                  <li>Select a 3D model currently on display to individually adjust its position coordinates, rotation, size, color, etc.</li>
                  <li>The selected model can be removed using the delete button.</li>
-                <li>SVG is imported as a flat image retaining text, colors and transparency. Custom fonts and externally linked images may not display in all environments.</li>
+                <li>SVG, JPEG and PNG are displayed as flat, textured panels with the image aspect ratio preserved. SVG retains text, colors and transparency; PNG transparency is retained as well. Custom SVG fonts and externally linked images may not display in all environments.</li>
+                <li>To override vertex colors in OBJ or GLB/glTF models, uncheck "Use Original Color" in Display and choose "Model Color". Recheck it to restore the source colors. GLB/glTF transparency and material shading are preserved.</li>
                  <li>In the CT Display tab, the histogram shows the imported 8-bit density distribution and lets you set minimum and maximum density values or drag the boundaries. For ISO, a maximum of 1.00 preserves the original minimum isosurface; reducing the maximum displays the first encountered boundary of the selected density band. For Hybrid, the range applies to interior DVR while the surface level is independent. In the standard blue-to-yellow palette, color endpoints are positioned relative to the selected density range and retain their percentages when its limits change.</li>
                  <li>In the Display tab, Commander-animatable settings (model color and opacity) are separated from settings that cannot be scripted. The Copy button includes color and opacity, or only opacity while original colors are active. CT rendering styles, transfer functions, density limits and clipping are not currently supported in Commander; configure the appearance first, then animate opacity or model transforms.</li>
              </ul>
 
             <h4>Dome View</h4>
             <ul>
-                <li>Opens a child window supporting dome master projections, cube-net layouts, equirectangular and perspective views, and a 3D dome-space preview. For planetarium projection, select a dome master projection and display it full screen through the external video input.</li>
+                <li>Opens a child window supporting dome master projections, cube-net layouts, full-sphere and upper-hemisphere equirectangular, perspective views, and a 3D dome-space preview. Upper-hemisphere equirectangular maps 360° of longitude and elevations from the horizon to zenith, with either a fixed 4:1 image or output fitted to the screen aspect ratio. For planetarium projection, select an appropriate projection and display it full screen through the external video input.</li>
             </ul>
              <h4>Tilt Controls (Bottom Left of Control Screen)</h4>
              <ul>
@@ -2018,11 +2022,11 @@ body.lang-ja .lang-en { display: none !important; }
                    </ul>
                  </li>
                  <li><strong>Pause: </strong>Described in the format "pause:0.00" (unit: seconds). If no time is specified, it triggers an interactive pause.</li>
-                 <li><strong>Tilt: </strong>Described in the format "tilt: 0.00, 0.00" (both units are in degrees), representing vertical tilt and horizontal tilt respectively. Can be combined with animation duration and easing by separating them with semicolons ";". Example: tilt: 30, 45; dur: 2; ease-in-out;</li>
+                 <li><strong>Tilt: </strong>Described in the format "tilt: 0.00, 0.00" (both units are in degrees), representing vertical tilt and horizontal tilt respectively. Can be combined with camera coordinates, attitude, duration and easing on the same line, separated by semicolons ";". Example: pos: 0, 0, 50; rot: 0, 0, 0; tilt: 30, 45; dur: 2; ease-in-out;</li>
                  </ul>
                  </li>
              </ul>
-             <p class="copyright"><a href="https://github.com/tasukuyoshioka/hoshizuna" target="_blank">Hoshizuna: Model Viewer for Dome</a> v1.76 | (c) <a href="https://researchmap.jp/estherian" target="_blank">Tasuku Yoshioka</a> (<a href="https://www.tsm.toyama.toyama.jp/" target="_blank">Toyama Science Museum</a>), 2025-2026 | Released under the <a href="https://opensource.org/license/mit" target="_blank">MIT license</a>.</p>
+             <p class="copyright"><a href="https://github.com/tasukuyoshioka/hoshizuna" target="_blank">Hoshizuna: Model Viewer for Dome</a> v1.77 | (c) <a href="https://researchmap.jp/estherian" target="_blank">Tasuku Yoshioka</a> (<a href="https://www.tsm.toyama.toyama.jp/" target="_blank">Toyama Science Museum</a>), 2025-2026 | Released under the <a href="https://opensource.org/license/mit" target="_blank">MIT license</a>.</p>
 
          </div>
              <button id="closeHelpButton">&times;</button>
@@ -2084,7 +2088,7 @@ body.lang-ja .lang-en { display: none !important; }
   <div class="source-body">
     <h3 id="addSourceHeading" data-i18n="add_source_title" style="margin:0 0 16px">追加するデータを選択</h3>
     <div class="source-options">
-      <button id="addSource3d" class="source-primary" type="button" data-i18n="add_source_model">3Dモデル</button>
+      <button id="addSource3d" class="source-primary" type="button" data-i18n="add_source_model">3Dモデル・画像</button>
       <button id="addSourceCt" type="button" data-i18n="add_source_folder">断層画像フォルダ</button>
       <button id="addSourceCancel" type="button" data-i18n="ct_cancel">キャンセル</button>
     </div>
@@ -2116,7 +2120,7 @@ body.lang-ja .lang-en { display: none !important; }
       <p class="ct-note" data-i18n="ct_raw_warning">RAWは1ファイル=1スライス。数値を含むファイル名の自然順で積層します。ファイルサイズだけでは符号付き・符号なしを判定できません。寸法・画素型・バイト順・間隔を確認してください。</p>
     </div>
     <div class="ct-field"><label for="ctMaxSize" data-i18n="ct_folder_resolution">最大ボクセル数（各軸）</label>
-      <select id="ctMaxSize"><option>64</option><option selected>128</option><option>192</option><option>256</option></select></div>
+      <select id="ctMaxSize"><option>64</option><option selected>128</option><option>192</option><option>256</option><option>512</option></select></div>
     <div class="ct-field"><label for="ctZReduction" data-i18n="ct_z_reduction">Z方向の縮小方法</label>
       <select id="ctZReduction">
         <option value="mean" data-i18n="ct_z_mean">全スライス平均（推奨）</option>
@@ -2340,12 +2344,19 @@ body.lang-ja .lang-en { display: none !important; }
 <div id="toastContainer"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>if (!(window.THREE)) document.write('<script src="./lib/three.min.js"><\/script>');</script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+    <script>if (!(window.THREE && window.THREE.STLLoader)) document.write('<script src="./lib/STLLoader.js"><\/script>');</script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+    <script>if (!(window.THREE && window.THREE.OBJLoader)) document.write('<script src="./lib/OBJLoader.js"><\/script>');</script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/SVGLoader.js"></script>
+    <script>if (!(window.THREE && window.THREE.SVGLoader)) document.write('<script src="./lib/SVGLoader.js"><\/script>');</script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script>if (!(window.THREE && window.THREE.GLTFLoader)) document.write('<script src="./lib/GLTFLoader.js"><\/script>');</script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script>if (!(window.THREE && window.THREE.OrbitControls)) document.write('<script src="./lib/OrbitControls.js"><\/script>');</script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/FlyControls.js"></script>
+    <script>if (!(window.THREE && window.THREE.FlyControls)) document.write('<script src="./lib/FlyControls.js"><\/script>');</script>
     <script>
 
 // --- マテリアル適用ヘルパー関数 ---
@@ -2564,7 +2575,7 @@ function sampleSliceToFloat(buffer, inputInfo, out, outOffset, outW, outH) {
         }
     }
 }
-function normalizeVolumeForDisplay(values, mode, manualLow, manualHigh, invertDensity = false) {
+function normalizeVolumeForDisplay(values, mode, manualLow, manualHigh, invertDensity = false, outputBuffer = null) {
     let lo=Infinity,hi=-Infinity;
     for(let i=0;i<values.length;i++) {
         const v=values[i];
@@ -2588,7 +2599,9 @@ function normalizeVolumeForDisplay(values, mode, manualLow, manualHigh, invertDe
         if(high<=low){low=lo;high=hi;}
     }
     if(high<=low) high=low+1;
-    const out=new Uint8Array(values.length), scale=255/(high-low);
+    const out=outputBuffer || new Uint8Array(values.length);
+    if (out.length !== values.length) throw new Error('Volume output buffer size mismatch.');
+    const scale=255/(high-low);
     for(let i=0;i<out.length;i++) {
         const mapped=Math.max(0,Math.min(255,Math.round((values[i]-low)*scale)));
         out[i]=invertDensity ? 255-mapped : mapped;
@@ -2631,11 +2644,19 @@ async function prepareVolumeFromSliceFolder(files, metaEntries, options, status)
        crop.z1-crop.z0<2) throw new Error('Invalid source crop bounds.');
     selected=selected.slice(crop.z0,crop.z1);
     const max=Number(options.maxSize);
-    if(![64,128,192,256].includes(max)) throw new Error('Invalid output resolution.');
+    if(![64,128,192,256,512].includes(max)) throw new Error('Invalid output resolution.');
     const cropW=crop.x1-crop.x0,cropH=crop.y1-crop.y0;
     const outW=Math.min(cropW,max),outH=Math.min(cropH,max),outD=Math.min(selected.length,max);
     const voxelCount=outW*outH*outD;
-    if(voxelCount>256**3) throw new Error('Volume too large.');
+    if(voxelCount>512**3) throw new Error('Volume too large.');
+    // Float32 analysis + final UInt8 volume + parent/child GPU textures. The
+    // browser may need additional short-lived memory during loading/transfer.
+    if (voxelCount >= 128**3) {
+        const estimateMiB = Math.ceil(voxelCount * 8 / (1024*1024));
+        console.info('CT target ' + outW + 'x' + outH + 'x' + outD +
+            ': approximately ' + estimateMiB + ' MiB for analysis, output and two GPU textures (excluding source and transfer).');
+        status('CT memory estimate: ' + estimateMiB + ' MiB minimum (plus input and temporary buffers).');
+    }
     const volume=new Float32Array(voxelCount);
     const slicePixels=outW*outH;
     const scratch=new Float32Array(slicePixels);
@@ -2711,8 +2732,20 @@ async function prepareVolumeFromSliceFolder(files, metaEntries, options, status)
 }
 function finalizePreparedCTVolume(prepared, min, max, inverted) {
     if(!prepared || !prepared.values) throw new Error('CT volume must be analyzed first.');
-    const range=normalizeVolumeForDisplay(prepared.values,'manual',min,max,inverted);
-    return {...prepared,values:null,data:buildHVO2(range.data,...prepared.output,prepared.spacing),range};
+    const count = prepared.values.length;
+    // Write the normalized bytes directly to the HVOL payload: for 512³ this
+    // avoids an additional 128 MiB temporary Uint8Array.
+    const output = new ArrayBuffer(32 + count);
+    const dv = new DataView(output);
+    new Uint8Array(output, 0, 4).set([72,86,79,50]);
+    prepared.output.forEach((dim,i) => dv.setUint32(4+i*4,dim,true));
+    prepared.spacing.forEach((spacing,i) => dv.setFloat32(16+i*4,spacing,true));
+    dv.setUint32(28,0,true);
+    const range = normalizeVolumeForDisplay(prepared.values,'manual',min,max,inverted,
+        new Uint8Array(output,32,count));
+    return {...prepared,values:null,data:output,
+        range:{low:range.low,high:range.high,actualMin:range.actualMin,
+            actualMax:range.actualMax,inverted:range.inverted}};
 }
 // Iterate a box region of a preview volume without making a large Float32 copy.
 function forEachCTRegion(values, dimensions, region, visit) {
@@ -2761,9 +2794,9 @@ function parseHVolumeData(buffer) {
     if (!legacy && !version2) throw new Error('Invalid HVOL signature.');
     const width=v.getUint32(4,true), height=v.getUint32(8,true),depth=v.getUint32(12,true);
     const headerSize=version2?32:16, count=width*height*depth;
-    if (![width,height,depth].every(n=>n>=2 && n<=256) ||
-        !Number.isSafeInteger(count) || count>256**3 || headerSize+count!==buffer.byteLength)
-        throw new Error('HVOL needs 2..256 voxels per axis and exactly 1 byte per voxel.');
+    if (![width,height,depth].every(n=>n>=2 && n<=512) ||
+        !Number.isSafeInteger(count) || count>512**3 || headerSize+count!==buffer.byteLength)
+        throw new Error('HVOL needs 2..512 voxels per axis and exactly 1 byte per voxel.');
     const spacing=version2?[v.getFloat32(16,true),v.getFloat32(20,true),v.getFloat32(24,true)]:[1,1,1];
     if(!spacing.every(n=>Number.isFinite(n) && n>0)) throw new Error('Invalid voxel spacing.');
     return {width,height,depth,spacing,data:new Uint8Array(buffer,headerSize,count)};
@@ -3148,8 +3181,15 @@ function renderSceneWithSVGVolumeLayers(renderer, scene, camera, state,
     }
 }
 
-function createHVolumeModel(buffer) {
+function createHVolumeModel(buffer, targetRenderer = null) {
     const vol = parseHVolumeData(buffer);
+    const gl = targetRenderer && typeof targetRenderer.getContext === 'function'
+        ? targetRenderer.getContext() : null;
+    if (gl && gl.MAX_3D_TEXTURE_SIZE) {
+        const max3D = gl.getParameter(gl.MAX_3D_TEXTURE_SIZE);
+        if (Math.max(vol.width, vol.height, vol.depth) > max3D)
+            throw new Error("Volume dimensions exceed this GPU's 3D texture limit (" + max3D + ").");
+    }
     // Hoshizuna uses Three.js r128 (pre-r138 class name: DataTexture3D).
     const Texture3D = THREE.DataTexture3D || THREE.Data3DTexture;
     if (!Texture3D) throw new Error('Three.js does not provide a 3D texture class.');
@@ -4877,27 +4917,47 @@ function inspectGLTFData(fileContent, fileType) {
     };
 }
 
-// Three.js r128 の MeshNormalMaterial では、非スキニング時に
-// fragment 側へ viewMatrix が必ずしも送られない。
-// 法線カラーは vertex 側で「ワールド座標」の法線を作り、
-// MeshNormalMaterial 本来の fragment を変更せず色として出力する。
+// Three.js r128 MeshNormalMaterial normally encodes VIEW-space normals.
+// Dome View uses six independent cameras, so the same surface would have
+// different RGB values at cube-face boundaries. Encode WORLD-space normals
+// instead, on both the parent and child windows (this function is injected
+// into the child window via function.toString()).
 function createWorldNormalMaterial(options = {}) {
     const material = new THREE.MeshNormalMaterial(options);
     material.onBeforeCompile = shader => {
-        // Three.js passes unexpanded #include chunks to onBeforeCompile.
-        // The old literal `vNormal = normalize( transformedNormal );` belongs to
-        // <normal_vertex> and cannot be found here, silently leaving camera-space colors.
-        const anchor = '#include <normal_vertex>';
+        // r128's ShaderLib.normal_vert has no <normal_vertex> include.
+        // Its literal assignment follows beginnormal_vertex, morphnormal_vertex
+        // and skinnormal_vertex, so objectNormal already includes morph/skin.
+        const anchor = 'vNormal = normalize( transformedNormal );';
         if (!shader.vertexShader.includes(anchor)) {
-            console.warn('createWorldNormalMaterial: normal_vertex chunk not found; using standard normals.');
+            console.warn('createWorldNormalMaterial: r128 normal assignment not found; using standard normals.');
             return;
         }
 
-        // objectNormal has morph and skin transforms; use a cofactor matrix so
-        // the normal stays world-space even with non-uniform or negative scale.
-        // Insert AFTER the normal_vertex chunk so its view-space assignment is
-        // replaced, not the other way around. GLSL ES 1.00 compatible.
-        shader.vertexShader = shader.vertexShader.replace(anchor, `${anchor}
+        // World inverse-transpose, expressed as a cofactor matrix for GLSL ES 1.00.
+        // Multiplying by sign(det) handles mirrored / negative mesh scales.
+        // This does not contain the viewMatrix and is independent of which
+        // dome-face camera is rendering the object.
+        if (material.userData.hoshizunaPanelAlpha) {
+            shader.uniforms.hoshizunaPanelAlphaTexture = material.userData.hoshizunaPanelAlpha;
+            // Three.js r128 MeshNormalMaterial defines 'uniform float opacity;'
+            // but does not include <common>, <map_fragment> or <alphatest_fragment>.
+            shader.vertexShader = shader.vertexShader.replace('void main() {',
+                'varying vec2 vHoshizunaPanelUv;\nvoid main() {\n vHoshizunaPanelUv = uv;');
+            shader.fragmentShader = shader.fragmentShader.replace('uniform float opacity;',
+                'uniform float opacity;\nvarying vec2 vHoshizunaPanelUv;\nuniform sampler2D hoshizunaPanelAlphaTexture;');
+            const alphaAnchor = 'gl_FragColor = vec4( packNormalToRGB( normal ), diffuseColor.a );';
+            // Older shader builds encode with normal * 0.5 + 0.5 instead.
+            const replacement = 'diffuseColor.a *= texture2D(hoshizunaPanelAlphaTexture, vHoshizunaPanelUv).a;\n' +
+                '#ifdef ALPHATEST\n if (diffuseColor.a < ALPHATEST) discard;\n#endif\n';
+            if (shader.fragmentShader.includes(alphaAnchor)) {
+                shader.fragmentShader = shader.fragmentShader.replace(alphaAnchor, replacement + alphaAnchor);
+            } else {
+                const anchor2 = 'gl_FragColor = vec4( normalize( normal ) * 0.5 + 0.5, diffuseColor.a );';
+                shader.fragmentShader = shader.fragmentShader.replace(anchor2, replacement + anchor2);
+            }
+        }
+        shader.vertexShader = shader.vertexShader.replace(anchor, `
             mat3 hoshizunaModel3 = mat3( modelMatrix );
             vec3 hoshizunaC0 = cross( hoshizunaModel3[1], hoshizunaModel3[2] );
             vec3 hoshizunaC1 = cross( hoshizunaModel3[2], hoshizunaModel3[0] );
@@ -4912,8 +4972,109 @@ function createWorldNormalMaterial(options = {}) {
             vNormal = normalize( hoshizunaWorldNormal );
         `);
     };
-    material.customProgramCacheKey = () => 'hoshizuna-world-normal-vertex-v3';
+    material.customProgramCacheKey = () => 'hoshizuna-world-normal-vertex-r128-v5-' + (material.userData.hoshizunaPanelAlpha ? 'alpha' : 'plain');
     return material;
+}
+
+// Keep the same alpha, opacity and culling in normal-color display. This
+// helper is embedded in Dome View together with createWorldNormalMaterial.
+function applyWorldNormalDisplaySettings(modelInfo, material = modelInfo.normalMaterial, source = modelInfo.originalMaterial) {
+    if (!material || !modelInfo || !modelInfo.displaySettings) return;
+    const ds = modelInfo.displaySettings;
+    const opacity = THREE.MathUtils.clamp(Number(ds.opacity), 0, 1);
+    const planar = !!ds.isSVGModel;
+    const sourceMaterial = Array.isArray(source) ? source[0] : source;
+    const alphaTexture = sourceMaterial && sourceMaterial.map &&
+        (planar || sourceMaterial.transparent || sourceMaterial.alphaTest > 0)
+        ? sourceMaterial.map : null;
+    const prevAlpha = material.userData.hoshizunaPanelAlpha?.value || null;
+    const nextSide = ds.doubleSide ? THREE.DoubleSide : THREE.FrontSide;
+    const nextWireframe = !!ds.wireframe;
+    const nextTransparent = planar || !!ds.transparent || opacity < 1 || !!(sourceMaterial && sourceMaterial.transparent);
+    const nextAlphaTest = sourceMaterial && sourceMaterial.alphaTest > 0 ? sourceMaterial.alphaTest : 0;
+    const recompile = material.side !== nextSide || material.transparent !== nextTransparent ||
+        material.wireframe !== nextWireframe || material.alphaTest !== nextAlphaTest ||
+        (!!prevAlpha !== !!alphaTexture);
+    material.side = nextSide;
+    material.opacity = Number.isFinite(opacity) ? opacity : 1;
+    material.transparent = nextTransparent;
+    material.depthWrite = planar ? false : !nextTransparent;
+    material.wireframe = nextWireframe;
+    material.alphaTest = nextAlphaTest;
+    material.userData.hoshizunaPanelAlpha = alphaTexture ? { value: alphaTexture } : null;
+    if (recompile) material.needsUpdate = true;
+}
+
+// Raster images and SVG panels share the same original-color, tint and alpha behavior.
+// Keeping the material identical preserves normal colors and CT/3DGS layering.
+function createPlanarImageMaterial(canvas) {
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.encoding = THREE.sRGBEncoding;
+    texture.minFilter = THREE.LinearMipmapLinearFilter;
+    texture.magFilter = THREE.LinearFilter;
+    texture.generateMipmaps = true;
+    texture.anisotropy = 4;
+    const material = new THREE.MeshBasicMaterial({
+        map: texture, color: 0xffffff, transparent: true, opacity: 1,
+        depthWrite: false, side: THREE.DoubleSide, alphaTest: 0
+    });
+    material.userData.hoshizunaSvgTint = {value: new THREE.Color(0x00ff00)};
+    material.userData.hoshizunaSvgColorBlend = {value: 0};
+    material.onBeforeCompile = function(shader) {
+        shader.uniforms.hoshizunaSvgTint = material.userData.hoshizunaSvgTint;
+        shader.uniforms.hoshizunaSvgColorBlend = material.userData.hoshizunaSvgColorBlend;
+        shader.fragmentShader = shader.fragmentShader.replace('#include <common>',
+            '#include <common>\nuniform vec3 hoshizunaSvgTint;\nuniform float hoshizunaSvgColorBlend;');
+        shader.fragmentShader = shader.fragmentShader.replace('#include <map_fragment>',
+            '#ifdef USE_MAP\n' +
+            'vec4 svgTexel = texture2D(map, vUv);\n' +
+            'svgTexel = mapTexelToLinear(svgTexel);\n' +
+            'diffuseColor.rgb *= mix(svgTexel.rgb, hoshizunaSvgTint, hoshizunaSvgColorBlend);\n' +
+            'diffuseColor.a *= svgTexel.a;\n' +
+            '#endif\n');
+    };
+    material.customProgramCacheKey = () => 'hoshizuna-svg-image-colors-v1';
+    return material;
+}
+
+// JPEG/PNG is displayed as a flat, double-sided textured panel. Maintain aspect
+// ratio and the same 500-unit longest-side size convention as SVG.
+async function createRasterTexturedModel(fileData, fileType, centerModel) {
+    if (!(fileData instanceof ArrayBuffer)) throw new Error('Image data must be binary.');
+    const mime = fileType === 'png' ? 'image/png' : 'image/jpeg';
+    const url = URL.createObjectURL(new Blob([fileData], {type: mime}));
+    let canvas, width, height;
+    try {
+        const image = await new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = () => reject(new Error('JPEG/PNG image cannot be decoded.'));
+            img.src = url;
+        });
+        width = image.naturalWidth;
+        height = image.naturalHeight;
+        if (!(width > 0 && height > 0 && Number.isFinite(width * height)))
+            throw new Error('Invalid JPEG/PNG dimensions.');
+        // Avoid excessive GPU memory for oversized source images. Geometry retains
+        // original aspect ratio, independent of the texture resolution.
+        const scale = Math.min(1, 4096 / Math.max(width, height), Math.sqrt(8000000 / (width * height)));
+        canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(width * scale));
+        canvas.height = Math.max(1, Math.round(height * scale));
+        const ctx = canvas.getContext('2d');
+        if (!ctx) throw new Error('Could not create image canvas.');
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    } finally {
+        URL.revokeObjectURL(url);
+    }
+    const material = createPlanarImageMaterial(canvas);
+    const plane = new THREE.Mesh(new THREE.PlaneGeometry(width, height), material);
+    plane.userData.originalSVGChildMaterial = material; // Shared planar display/occlusion path.
+    if (!centerModel) plane.position.set(width * 0.5, -height * 0.5, 0);
+    const group = new THREE.Group();
+    group.add(plane);
+    group.scale.setScalar(500 / Math.max(width, height));
+    return {mesh: group, material};
 }
 
 // SVGの見た目（テキスト、塗り、輪郭、重なり、アルファ）をそのまま平面に描画する。
@@ -4971,32 +5132,7 @@ async function createSVGTexturedModel(svgText, centerModel) {
         context.drawImage(image, 0, 0, texWidth, texHeight);
         // 外部リソースによるcanvas汚染はThree.jsによるテクスチャ生成もできない。
         context.getImageData(0, 0, 1, 1);
-        const texture = new THREE.CanvasTexture(canvas);
-        texture.encoding = THREE.sRGBEncoding;
-        texture.minFilter = THREE.LinearMipmapLinearFilter;
-        texture.magFilter = THREE.LinearFilter;
-        texture.generateMipmaps = true;
-        texture.anisotropy = 4;
-        const material = new THREE.MeshBasicMaterial({
-            map: texture, color: 0xffffff, transparent: true, opacity: 1,
-            depthWrite: false, side: THREE.DoubleSide, alphaTest: 0
-        });
-        material.userData.hoshizunaSvgTint = {value: new THREE.Color(0x00ff00)};
-        material.userData.hoshizunaSvgColorBlend = {value: 0};
-        material.onBeforeCompile = function(shader) {
-            shader.uniforms.hoshizunaSvgTint = material.userData.hoshizunaSvgTint;
-            shader.uniforms.hoshizunaSvgColorBlend = material.userData.hoshizunaSvgColorBlend;
-            shader.fragmentShader = shader.fragmentShader.replace('#include <common>',
-                '#include <common>\nuniform vec3 hoshizunaSvgTint;\nuniform float hoshizunaSvgColorBlend;');
-            shader.fragmentShader = shader.fragmentShader.replace('#include <map_fragment>',
-                '#ifdef USE_MAP\n' +
-                'vec4 svgTexel = texture2D(map, vUv);\n' +
-                'svgTexel = mapTexelToLinear(svgTexel);\n' +
-                'diffuseColor.rgb *= mix(svgTexel.rgb, hoshizunaSvgTint, hoshizunaSvgColorBlend);\n' +
-                'diffuseColor.a *= svgTexel.a;\n' +
-                '#endif\n');
-        };
-        material.customProgramCacheKey = () => 'hoshizuna-svg-image-colors-v1';
+        const material = createPlanarImageMaterial(canvas);
         const box = new THREE.PlaneGeometry(width, height);
         const plane = new THREE.Mesh(box, material);
         plane.userData.originalSVGChildMaterial = material;
@@ -5030,6 +5166,7 @@ function applySVGDisplaySettings(modelInfo) {
         const mat = object.userData.originalSVGChildMaterial;
         if (!mat) return;
         if (ds.normals) {
+            applyWorldNormalDisplaySettings(modelInfo, modelInfo.normalMaterial, mat);
             object.material = modelInfo.normalMaterial;
             return;
         }
@@ -5073,11 +5210,15 @@ async function createGLTFModel(fileContent, fileType, centerModel) {
                 ? object.material.map(mat => mat.clone()) : object.material.clone();
             object.material = original;
             object.userData.hoshizunaOriginalMaterial = original;
-            object.userData.hoshizunaNormalMaterial = createWorldNormalMaterial({
+            const makeNormalMaterial = () => createWorldNormalMaterial({
                 side: THREE.DoubleSide,
                 skinning: !!object.isSkinnedMesh,
                 morphTargets: !!object.morphTargetInfluences
             });
+            // Material groups can have different alpha maps and opacity.
+            // Preserve that subdivision in normal-color mode too.
+            object.userData.hoshizunaNormalMaterial = Array.isArray(original)
+                ? original.map(() => makeNormalMaterial()) : makeNormalMaterial();
             const materials = Array.isArray(original) ? original : [original];
             materials.forEach(mat => {
                 if (!firstMaterial) firstMaterial = mat;
@@ -5113,6 +5254,29 @@ async function createGLTFModel(fileContent, fileType, centerModel) {
                                 '#endif\n');
                     };
                 }
+                // Shader-level forced RGB after both the texture map and COLOR_0.
+                // Unlike material.color tinting, this gives one uniform chosen color
+                // while preserving original transparency, texture alpha and lighting.
+                mat.userData.hoshizunaForcedColor = { value: new THREE.Color(0x00ff00) };
+                mat.userData.hoshizunaForcedColorBlend = { value: 0 };
+                const previousCompile = mat.onBeforeCompile;
+                mat.onBeforeCompile = function(shader, renderer) {
+                    if (previousCompile) previousCompile.call(this, shader, renderer);
+                    if (!shader.fragmentShader.includes('#include <color_fragment>') ||
+                        !shader.fragmentShader.includes('#include <common>')) return;
+                    shader.uniforms.hoshizunaForcedColor = mat.userData.hoshizunaForcedColor;
+                    shader.uniforms.hoshizunaForcedColorBlend = mat.userData.hoshizunaForcedColorBlend;
+                    shader.fragmentShader = shader.fragmentShader.replace('#include <common>',
+                        '#include <common>\nuniform vec3 hoshizunaForcedColor;\nuniform float hoshizunaForcedColorBlend;');
+                    shader.fragmentShader = shader.fragmentShader.replace('#include <color_fragment>',
+                        '#include <color_fragment>\ndiffuseColor.rgb = mix(diffuseColor.rgb, hoshizunaForcedColor, hoshizunaForcedColorBlend);');
+                    // glTF emissive maps also contribute RGB. Suppress their original
+                    // hue while overriding the base color, without dropping alpha.
+                    if (shader.fragmentShader.includes('#include <emissivemap_fragment>')) {
+                        shader.fragmentShader = shader.fragmentShader.replace('#include <emissivemap_fragment>',
+                            '#include <emissivemap_fragment>\ntotalEmissiveRadiance *= (1.0 - hoshizunaForcedColorBlend);');
+                    }
+                };
             });
         });
     } else {
@@ -5122,6 +5286,7 @@ async function createGLTFModel(fileContent, fileType, centerModel) {
             vertexColors: details.hasVertexColors,
             specular: 0x111111, shininess: 200, side: THREE.FrontSide
         });
+        firstMaterial.userData.hoshizunaOriginalVertexColors = !!details.hasVertexColors;
         setMaterialToMesh(root, firstMaterial);
     }
     if (meshCount === 0) throw new Error('glTF内に表示可能なメッシュがありません。');
@@ -5137,6 +5302,21 @@ async function createGLTFModel(fileContent, fileType, centerModel) {
         hasGLTFMaterials: details.hasGLTFMaterials,
         hasVertexColors: details.hasVertexColors
     };
+}
+
+// Original vertex colors must be restorable even after the user turns them off.
+// Used for OBJ and for glTF without explicit material definitions, in both windows.
+function applyVertexColorPreference(material, useOriginalColor, selectedColor, originalObjColor = null) {
+    if (!material) return;
+    const withVertexColors = !!(material.userData.hoshizunaOriginalVertexColors && useOriginalColor);
+    const changed = material.vertexColors !== withVertexColors;
+    material.vertexColors = withVertexColors;
+    if (material.color) {
+        material.color.set(withVertexColors ? 0xffffff :
+            (useOriginalColor && originalObjColor !== null ? originalObjColor : selectedColor));
+    }
+    // USE_COLOR is a shader define; a program update is needed only on toggles.
+    if (changed) material.needsUpdate = true;
 }
 
 function applyGLTFDisplaySettings(modelInfo) {
@@ -5156,7 +5336,7 @@ function applyGLTFDisplaySettings(modelInfo) {
             const nextTransparent = factor < 1;
             const requiresProgramUpdate = material.wireframe !== settings.wireframe ||
                 material.transparent !== nextTransparent || material.side !== nextSide;
-            if (!material.vertexColors) material.color.set(settings.color);
+            applyVertexColorPreference(material, modelInfo.useOriginalColor, settings.color);
             material.shininess = settings.shininess;
             material.wireframe = settings.wireframe;
             material.opacity = factor;
@@ -5164,6 +5344,7 @@ function applyGLTFDisplaySettings(modelInfo) {
             material.side = nextSide;
             if (requiresProgramUpdate) material.needsUpdate = true;
         }
+        if (settings.normals) applyWorldNormalDisplaySettings(modelInfo);
         setMaterialToMesh(modelInfo.mesh, settings.normals ? modelInfo.normalMaterial : material);
         return;
     }
@@ -5189,23 +5370,38 @@ function applyGLTFDisplaySettings(modelInfo) {
             material.depthWrite = factor < 1 ? false : base.depthWrite;
             material.side = nextSide;
             material.wireframe = settings.wireframe;
-            if (material.color && base.color) {
-                if (modelInfo.useOriginalColor) {
-                    material.color.copy(base.color);
-                } else if (originalColorBlend !== null) {
-                    // 単色化による不連続な変化を避け、元の各マテリアル色から補間する。
-                    material.color.copy(base.color)
-                        .lerp(desiredColor, originalColorBlend);
-                } else {
-                    material.color.set(settings.color);
-                }
+            // Keep native base colors intact, including embedded textures and COLOR_0.
+            // A fragment-shader uniform overrides the final diffuse RGB only when
+            // "Use Original Color" is off. This avoids tinting and retains alpha.
+            if (material.color && base.color) material.color.copy(base.color);
+            if (material.userData.hoshizunaForcedColor) {
+                material.userData.hoshizunaForcedColor.value.copy(desiredColor);
+                material.userData.hoshizunaForcedColorBlend.value = modelInfo.useOriginalColor ? 0 :
+                    (originalColorBlend === null ? 1 : originalColorBlend);
             }
             // 色と不透明度は通常uniformの変更であり、毎フレーム再コンパイルは不要。
             // ただしalphaTest (MASK), wireframe, side, transparentの変更は必要。
             if (requiresProgramUpdate) material.needsUpdate = true;
         }
-        object.material = settings.normals
-            ? object.userData.hoshizunaNormalMaterial : original;
+        if (settings.normals) {
+            const normalMaterials = object.userData.hoshizunaNormalMaterial;
+            const sourceArray = Array.isArray(original) ? original : [original];
+            const normalArray = Array.isArray(normalMaterials) ? normalMaterials : [normalMaterials];
+            for (let i = 0; i < sourceArray.length; i++) {
+                const baseMat = sourceArray[i], normalMat = normalArray[i];
+                applyWorldNormalDisplaySettings(modelInfo, normalMat, baseMat);
+                const opacity = Math.max(0, Math.min(1,
+                    (baseMat.userData.hoshizunaBase?.opacity ?? 1) * factor));
+                if (opacity < 1 && !normalMat.transparent) {
+                    normalMat.transparent = true;
+                    normalMat.needsUpdate = true;
+                }
+                normalMat.opacity = opacity;
+            }
+            object.material = normalMaterials;
+        } else {
+            object.material = original;
+        }
     });
 }
 
@@ -5256,7 +5452,7 @@ const i18n = {
         alert_record_sequence_failed: "録画を開始できませんでした。コマンダが実行中か、再生ボタンが見つかりません。",
         alert_record_dome_closed: "ドームビューが開いていないため、録画を開始できません。",
         add_source_title: "追加するデータを選択",
-        add_source_model: "3Dモデル",
+        add_source_model: "3Dモデル・画像",
         add_source_folder: "断層画像フォルダ",
         ct_analyze: "分布を解析",
         ct_hist_explain: "選択した3次元領域の密度分布（8ビット変換前）です。黄色の線で値域を指定します。解析時の空間縮小後の値を表示します。",
@@ -5421,6 +5617,8 @@ const i18n = {
         opt_cube_net: "6方向画像の展開表示 (Cube Net)",
         opt_equirect_2to1: "エクイレクタングラー（アスペクト比2:1）",
         opt_equirect_screen: "エクイレクタングラー（アスペクト比画面に合わせる）",
+        opt_equirect_upper: "上半球エクイレクタングラー（4:1）",
+        opt_equirect_upper_screen: "上半球エクイレクタングラー（画面のアスペクト比）",
         opt_perspective_main: "透視投影（メイン画面と同等）",
         opt_perspective_wide: "透視投影（メイン画面より広角）",
         opt_dome_overview: "ドーム投影の空間プレビュー (Dome Preview)",
@@ -5477,7 +5675,7 @@ const i18n = {
         alert_no_model: "モデルが選択されていません。",
         alert_copy_failed: "クリップボードへのコピーに失敗しました。ブラウザの設定を確認してください（HTTPS接続が必要な場合があります）。",
         alert_no_valid_cmd: "解析できる有効なコマンドが見つかりませんでした。",
-        alert_unsupported_format: "サポートされていないファイル形式です。STL、OBJ、SVG、GLB、glTF、splat、または3DGS用PLYを選択してください。",
+        alert_unsupported_format: "サポートされていないファイル形式です。STL、OBJ、SVG、JPEG、PNG、GLB、glTF、splat、3DGS用PLY、またはHVOLを選択してください。",
         alert_no_mesh_obj: "OBJファイル内に有効なメッシュが見つかりませんでした。",
         alert_load_failed: "モデルの読み込みに失敗しました。",
         alert_open_dome_first: "録画を開始するには、まず「ドームビュー」ウィンドウを開いてください。",
@@ -5506,7 +5704,7 @@ const i18n = {
         alert_record_sequence_failed: "Could not start recording. Commander may be running or the play button was not found.",
         alert_record_dome_closed: "Open the Dome View before starting recording.",
         add_source_title: "Choose data to add",
-        add_source_model: "3D Model",
+        add_source_model: "3D Model / Image",
         add_source_folder: "Tomographic Image Folder",
         ct_analyze: "Analyze Histogram",
         ct_hist_explain: "Histogram within the selected 3D region before 8-bit conversion. The source intensities shown are spatially reduced for preview; drag the yellow limits to set the window.",
@@ -5668,6 +5866,8 @@ const i18n = {
         opt_cube_net: "Six-Face Cube Net (Unfolded)",
         opt_equirect_2to1: "Equirectangular (2:1 aspect ratio)",
         opt_equirect_screen: "Equirectangular (Fit screen aspect)",
+        opt_equirect_upper: "Upper-Hemisphere Equirectangular (4:1)",
+        opt_equirect_upper_screen: "Upper-Hemisphere Equirectangular (Fit screen aspect)",
         opt_perspective_main: "Perspective (Same as main view)",
         opt_perspective_wide: "Perspective (Wider than main view)",
         opt_dome_overview: "Dome Projection Preview (Inside / Outside)",
@@ -5724,7 +5924,7 @@ const i18n = {
         alert_no_model: "No model selected.",
         alert_copy_failed: "Failed to copy to clipboard. Please check your browser settings (HTTPS might be required).",
         alert_no_valid_cmd: "No valid commands found to parse.",
-        alert_unsupported_format: "Unsupported format. Select STL, OBJ, SVG, GLB, glTF, SPLAT, Gaussian Splatting PLY, or HVOL.",
+        alert_unsupported_format: "Unsupported format. Select STL, OBJ, SVG, JPEG, PNG, GLB, glTF, SPLAT, Gaussian Splatting PLY, or HVOL.",
         alert_no_mesh_obj: "No valid mesh found in OBJ file.",
         alert_load_failed: "Failed to load model.",
         alert_open_dome_first: "Please open the 'Dome View' window first to start recording.",
@@ -6664,7 +6864,31 @@ const workerBlob = new Blob([`
         }
     };
 `], { type: 'application/javascript' });
-animationWorker = new Worker(URL.createObjectURL(workerBlob));
+try {
+    const animationWorkerUrl = URL.createObjectURL(workerBlob);
+    try {
+        animationWorker = new Worker(animationWorkerUrl);
+    } finally {
+        URL.revokeObjectURL(animationWorkerUrl);
+    }
+} catch (error) {
+    console.warn('Animation Worker unavailable; using main-thread tick fallback:', error);
+    let timer = null;
+    const fallback = {onmessage: null, postMessage(command) {
+        if (command === 'stop' && timer !== null) {
+            clearTimeout(timer); timer = null;
+        } else if (command === 'start' && timer === null) {
+            const tick = () => {
+                if (timer === null) return;
+                const running = timer;
+                if (typeof fallback.onmessage === 'function') fallback.onmessage({data:'tick'});
+                if (timer === running) timer = setTimeout(tick, 17);
+            };
+            timer = setTimeout(tick, 17);
+        }
+    }};
+    animationWorker = fallback;
+}
 
 
 // --- 録画機能のための変数 ---
@@ -6745,36 +6969,36 @@ function applyModelDisplaySettings(modelInfo, childWin) {
     const mesh = modelInfo.mesh;
     if (!mesh) return;
     const isSVGModel = modelInfo.displaySettings.isSVGModel;
-    const isVertexColorMaterial = modelInfo.originalMaterial && modelInfo.originalMaterial.vertexColors === true;
+    const originalMaterial = modelInfo.originalMaterial;
 
     if (modelInfo.displaySettings.normals) {
         if (isSVGModel) {
-            mesh.traverse(child => { if (child.isMesh) child.material = modelInfo.normalMaterial; });
+            applySVGDisplaySettings(modelInfo);
         } else {
+            applyWorldNormalDisplaySettings(modelInfo);
             setMaterialToMesh(mesh, modelInfo.normalMaterial);
         }
     } else {
         if (!isSVGModel) {
             setMaterialToMesh(mesh, modelInfo.originalMaterial);
             const mat = modelInfo.originalMaterial;
-            if (!isVertexColorMaterial) {
-                if (modelInfo.useOriginalColor && modelInfo.originalObjColor !== null) {
-                    mat.color.set(modelInfo.originalObjColor);
-                } else {
-                    mat.color.set(modelInfo.displaySettings.color);
-                }
-            }
+            applyVertexColorPreference(mat, modelInfo.useOriginalColor,
+                modelInfo.displaySettings.color, modelInfo.originalObjColor);
             if (mat.isMeshPhongMaterial) {
+                const nextSide = modelInfo.displaySettings.doubleSide ? THREE.DoubleSide : THREE.FrontSide;
+                const recompile = mat.wireframe !== modelInfo.displaySettings.wireframe ||
+                    mat.transparent !== modelInfo.displaySettings.transparent || mat.side !== nextSide;
                 mat.shininess = modelInfo.displaySettings.shininess;
                 mat.wireframe = modelInfo.displaySettings.wireframe;
                 mat.opacity = modelInfo.displaySettings.opacity;
                 mat.transparent = modelInfo.displaySettings.transparent;
-                mat.side = modelInfo.displaySettings.doubleSide ? THREE.DoubleSide : THREE.FrontSide;
-                mat.needsUpdate = true;
+                mat.side = nextSide;
+                if (recompile) mat.needsUpdate = true;
             } else if (mat.opacity !== undefined) {
+                const recompile = mat.transparent !== modelInfo.displaySettings.transparent;
                 mat.opacity = modelInfo.displaySettings.opacity;
                 mat.transparent = modelInfo.displaySettings.transparent;
-                mat.needsUpdate = true;
+                if (recompile) mat.needsUpdate = true;
             }
         } else {
             applySVGDisplaySettings(modelInfo);
@@ -7555,7 +7779,12 @@ updateModelListDisplay();
                     setCTFolderStatus(ctI18n('表示用8ビットデータを作成中…','Converting windowed data to 8-bit...'));
                     const result=finalizePreparedCTVolume(prepared,range.min,range.max,ctInvertDensity.checked);
                     const folderName=(ctFolderFiles[0].webkitRelativePath||'CTVolume').split('/')[0];
-                    loadModel(new File([result.data],folderName+'.hvol',{type:'application/octet-stream'}),true);
+                    const importedId = await loadModel({name:folderName+'.hvol', buffer:result.data},true);
+                    if (!models.has(importedId)) throw new Error('CT model registration failed.');
+                    // Only after the model is successfully added. This also releases
+                    // the large Float32 data sooner than waiting for the dialog to close.
+                    if (ctPreparedVolume) ctPreparedVolume.values = null;
+                    prepared.values = null;
                     showToast('CT: '+result.sourceWidth+'×'+result.sourceHeight+'×'+result.sourceTotalCount+
                         ' → '+result.output.join('×')+'; used '+result.usedSlices+'/'+result.sourceCount+
                         ' slices ('+result.zReduction+'); values '+result.range.low.toFixed(1)+'–'+
@@ -8335,7 +8564,7 @@ if (stopCommandButton) {
 // 「原点に移動させて追加」ボタンのイベントリスナー
 addModelCenteredButton.addEventListener('click', function() {
     if (currentSelectedFile) {
-        loadModel(currentSelectedFile, true); // 原点に移動させる
+        loadModel(currentSelectedFile, true).catch(error => console.error('Model import:', error)); // 原点に移動させる
         currentSelectedFile = null; // ファイル参照をクリア
         coordinateSelectOverlay.style.display = 'none'; // 確認画面を非表示
     }
@@ -8344,7 +8573,7 @@ addModelCenteredButton.addEventListener('click', function() {
 // 「座標通りに追加」ボタンのイベントリスナー
 addModelAsIsButton.addEventListener('click', function() {
     if (currentSelectedFile) {
-        loadModel(currentSelectedFile, false); // 座標通りに追加する
+        loadModel(currentSelectedFile, false).catch(error => console.error('Model import:', error)); // 座標通りに追加する
         currentSelectedFile = null; // ファイル参照をクリア
         coordinateSelectOverlay.style.display = 'none'; // 確認画面を非表示
     }
@@ -8730,7 +8959,7 @@ function parseSingleCommandSegment(segmentContent, lineNumber) {
     const durationRegex = /(?:duration|dur):\s*([\d.-]+)/;
     const pauseRegex = /pause(?:\s*:\s*([\d.-]+))?/;
     const cubicBezierRegex = /cubic-bezier:\s*([\d.-]+),\s*([\d.-]+),\s*([\d.-]+),\s*([\d.-]+)/;
-    const presetBezierRegex = /(linear|ease|ease-in|ease-out|ease-in-out)/;
+    const presetBezierRegex = /(linear|ease-in-out|ease-in|ease-out|ease)/;
     const tiltRegex = /tilt:\s*([\d.-]+),\s*([\d.-]+)/;
     const waitRegex = /wait:\s*([\d.-]+)/;
 
@@ -8830,19 +9059,20 @@ function parseSingleCommandSegment(segmentContent, lineNumber) {
         }
     });
 
-    if (isTiltCommand) {
+    if (isTiltCommand || parsedPosition !== null || parsedRotationQuaternion !== null) {
+        // One camera command can contain pos, rot and tilt together.
+        // Returning just a tilt command used to silently discard pos/rot.
+        // A combined move has one shared duration, easing curve and wait.
         return {
-            type: 'tilt', tiltX: parsedTiltX, tiltY: parsedTiltY,
-            duration: parsedDuration, cubicBezier: parsedCubicBezier, wait: parsedWait,
-            _startTime: 0, _initialTiltX: 0, _initialTiltY: 0,
-            _targetTiltX: parsedTiltX, _targetTiltY: parsedTiltY, _isWaiting: parsedWait > 0
-        };
-    } else if (parsedPosition !== null || parsedRotationQuaternion !== null) {
-        return {
-            type: 'move', position: parsedPosition, quaternion: parsedRotationQuaternion,
+            type: isTiltCommand && parsedPosition === null && parsedRotationQuaternion === null ? 'tilt' : 'move',
+            position: parsedPosition, quaternion: parsedRotationQuaternion,
+            tiltX: isTiltCommand ? parsedTiltX : null,
+            tiltY: isTiltCommand ? parsedTiltY : null,
             duration: parsedDuration, cubicBezier: parsedCubicBezier, wait: parsedWait,
             _startTime: 0, _initialPosition: new THREE.Vector3(), _initialQuaternion: new THREE.Quaternion(),
-            _targetPosition: parsedPosition, _targetQuaternion: parsedRotationQuaternion, _isWaiting: parsedWait > 0
+            _targetPosition: parsedPosition, _targetQuaternion: parsedRotationQuaternion,
+            _initialTiltX: null, _initialTiltY: null,
+            _targetTiltX: parsedTiltX, _targetTiltY: parsedTiltY, _isWaiting: parsedWait > 0
         };
     }
     // wait 単独の場合もコマンドとして認識させる (duration 0 の move/tilt として扱うか、専用タイプを設けるか)
@@ -8866,7 +9096,12 @@ function parseSingleCommandSegment(segmentContent, lineNumber) {
 
 // モデル読み込みを処理する関数
         function loadModel(file, centerModel) {
-            const reader = new FileReader();
+            return new Promise((resolve, reject) => {
+            const reader = file && file.buffer instanceof ArrayBuffer ? {
+                readAsArrayBuffer() {
+                    queueMicrotask(() => this.onload({target:{result:file.buffer}}));
+                }
+            } : new FileReader();
             const fileName = file.name;
             const fileExtension = fileName.split('.').pop().toLowerCase();
 
@@ -8884,6 +9119,7 @@ function parseSingleCommandSegment(segmentContent, lineNumber) {
             const isSTL = fileExtension === 'stl';
             const isOBJ = fileExtension === 'obj';
             const isSVG = fileExtension === 'svg';
+            const isRasterImage = ['png', 'jpg', 'jpeg'].includes(fileExtension);
             const isGLTF = fileExtension === 'glb' || fileExtension === 'gltf';
             const isGaussianSplat = fileExtension === 'splat' || fileExtension === 'ply';
             const isVolume = fileExtension === 'hvol';
@@ -8951,6 +9187,7 @@ function parseSingleCommandSegment(segmentContent, lineNumber) {
                                 shininess: 200,
                                 side: THREE.FrontSide
                             });
+                            initialMaterial.userData.hoshizunaOriginalVertexColors = true;
                             useOriginalColor = true;
                             originalColorHex = null;
                         } else {
@@ -8994,22 +9231,20 @@ function parseSingleCommandSegment(segmentContent, lineNumber) {
 
                     } else {
                         console.error('OBJファイル内にメッシュが見つかりませんでした。');
-                        showToast(i18n[currentLang].alert_no_mesh_obj);
-                        return;
+                        throw new Error(i18n[currentLang].alert_no_mesh_obj);
                     }
                 } else if (isVolume) {
                     try {
                         if (!renderer.capabilities.isWebGL2)
                             throw new Error('Volume rendering requires WebGL2.');
-                        const vol = createHVolumeModel(fileContent);
+                        const vol = createHVolumeModel(fileContent, renderer);
                         newMesh = vol.mesh;
                         initialMaterial = vol.initialMaterial;
                         useOriginalColor = true;
                         geometryCenteredFlag = !!centerModel;
                     } catch (error) {
                         console.error('Volume load failed:', error);
-                        showToast('Volume: ' + error.message);
-                        return;
+                        throw error;
                     }
                 } else if (isGaussianSplat) {
                     try {
@@ -9030,8 +9265,7 @@ function parseSingleCommandSegment(segmentContent, lineNumber) {
                         }
                     } catch (error) {
                         console.error('3DGS load failed:', error);
-                        showToast('3DGS: ' + error.message);
-                        return;
+                        throw error;
                     }
                 } else if (isGLTF) {
                     try {
@@ -9044,9 +9278,19 @@ function parseSingleCommandSegment(segmentContent, lineNumber) {
                         geometryCenteredFlag = !!centerModel;
                     } catch (error) {
                         console.error('GLB/glTF load failed:', error);
-                        showToast('GLB/glTF: ' + error.message);
-                        return;
+                        throw error;
                     }
+                } else if (isRasterImage) {
+                    const imageInfo = await createRasterTexturedModel(fileContent, fileExtension, centerModel);
+                    // Reuse the SVG planar texture path for material editing, normal
+                    // display, alpha composition, deletion, and dome synchronization.
+                    isSVGModel = true;
+                    newMesh = imageInfo.mesh;
+                    initialMaterial = imageInfo.material;
+                    geometry = null;
+                    originalColorHex = null;
+                    useOriginalColor = true;
+                    geometryCenteredFlag = !!centerModel;
                 } else if (isSVG) {
                     // SVGのpathだけでなく、textや重なりも全て平面テクスチャに描く。
                     const svgInfo = await createSVGTexturedModel(fileContent, centerModel);
@@ -9058,20 +9302,18 @@ function parseSingleCommandSegment(segmentContent, lineNumber) {
                     useOriginalColor = true;
                     geometryCenteredFlag = !!centerModel;
                 } else {
-                    console.error('サポートされていないファイル形式です。STL、OBJ、またはSVGファイルを選択してください。');
+                    console.error('サポートされていないファイル形式です。STL、OBJ、SVG、GLB/glTF、PNG、JPEGなどから選択してください。');
                     //alert('サポートされていないファイル形式です。STL、OBJ、またはSVGファイルを選択してください。');
-                    alert(i18n[currentLang].alert_unsupported_format);
-                    return;
+                    throw new Error(i18n[currentLang].alert_unsupported_format);
                 }
 
                 if (!newMesh) {
                     console.error('ジオメトリまたはメッシュの生成に失敗しました。');
                     //alert('モデルの読み込みに失敗しました。');
-                    alert(i18n[currentLang].alert_load_failed);
-                    return;
+                    throw new Error(i18n[currentLang].alert_load_failed);
                 }
                 
-                const offset = calculateModelOffset();
+                const offset = calculateModelOffset(newMesh, isSVGModel);
                 newMesh.position.set(offset, 0, 0);
                 console.log("loadModel: Mesh scene position set to:", newMesh.position.toArray());
 
@@ -9198,7 +9440,9 @@ function parseSingleCommandSegment(segmentContent, lineNumber) {
                         sendAddModelToChild(newModelInfo.id, newModelInfo.fileData, newMesh.position.toArray(), newMesh.quaternion.toArray(), newMesh.scale.toArray(), newModelInfo.displaySettings, newModelInfo.fileType, newModelInfo.name, newModelInfo.displaySettings.isGeometryCentered, newModelInfo.originalObjColor, newModelInfo.useOriginalColor);
                     }
                 }
+                resolve(newModelId);
                 } catch (error) {
+                    reject(error);
                     console.error('Model load failed:', fileName, error);
                     showToast(i18n[currentLang].alert_load_failed + ': ' + fileName + ' — ' +
                         (error && error.message ? error.message : String(error)));
@@ -9209,21 +9453,27 @@ function parseSingleCommandSegment(segmentContent, lineNumber) {
                 console.error('File read failed:', fileName, reader.error);
                 showToast(i18n[currentLang].alert_load_failed + ': ' + fileName + ' — ' +
                     (reader.error && reader.error.message ? reader.error.message : 'FileReader error'));
+                reject(reader.error || new Error('FileReader error'));
             };
             reader.onabort = function() {
                 console.warn('File read aborted:', fileName);
+                reject(new Error('File reading was aborted.'));
             };
             try {
-                if (isSTL || isGLTF || isGaussianSplat || isVolume) {
+                if (isSTL || isGLTF || isGaussianSplat || isVolume || isRasterImage) {
                     reader.readAsArrayBuffer(file);
                 } else if (isOBJ || isSVG) {
                     reader.readAsText(file);
+                } else {
+                    throw new Error(i18n[currentLang].alert_unsupported_format);
                 }
             } catch (error) {
                 console.error('Cannot start file read:', fileName, error);
                 showToast(i18n[currentLang].alert_load_failed + ': ' + fileName + ' — ' +
                     (error && error.message ? error.message : String(error)));
+                reject(error);
             }
+            });
         }
 
 
@@ -9231,12 +9481,22 @@ function parseSingleCommandSegment(segmentContent, lineNumber) {
 
 
 // モデルの数に基づいてオフセットを計算するヘルパー関数
-function calculateModelOffset() {
-    // models Mapのサイズ（要素数）を取得
-    const activeModelsCount = models.size;
-    // モデルが重ならないようにX軸方向にオフセットを適用
-    // 必要に応じてこの値（1.0）を調整してください。
-    return activeModelsCount * 1.0;
+function calculateModelOffset(newMesh = null, isPlanar = false) {
+    // For flat images, a 1-unit offset is imperceptible next to a 500-unit panel.
+    // Preserve the legacy offsets for solid 3D formats.
+    if (!isPlanar || !newMesh || models.size === 0) return models.size * 1.0;
+    newMesh.updateMatrixWorld(true);
+    const incoming = new THREE.Box3().setFromObject(newMesh);
+    if (incoming.isEmpty()) return models.size;
+    let rightmost = -Infinity;
+    models.forEach(info => {
+        if (!info.mesh || !info.mesh.visible) return;
+        const box = new THREE.Box3().setFromObject(info.mesh);
+        if (!box.isEmpty()) rightmost = Math.max(rightmost, box.max.x);
+    });
+    if (!Number.isFinite(rightmost)) return 0;
+    const panelWidth = incoming.max.x - incoming.min.x;
+    return rightmost - incoming.min.x + Math.max(10, panelWidth * 0.05);
 }
 
 
@@ -9601,6 +9861,12 @@ function initializeSubCommandState(cmd, cam, modelMap, tiltXSlider, tiltYSlider)
         cmd._initialQuaternion = cam.quaternion.clone();
         cmd._targetPosition = cmd.position ? cmd.position.clone() : cmd._initialPosition.clone();
         cmd._targetQuaternion = cmd.quaternion ? cmd.quaternion.clone() : cmd._initialQuaternion.clone();
+        if (cmd.tiltX !== null && cmd.tiltX !== undefined) {
+            cmd._initialTiltX = parseFloat(tiltXSlider.value);
+            cmd._initialTiltY = parseFloat(tiltYSlider.value);
+            cmd._targetTiltX = cmd.tiltX;
+            cmd._targetTiltY = cmd.tiltY;
+        }
     } else if (cmd.type === 'tilt') {
         cmd._initialTiltX = parseFloat(tiltXSlider.value);
         cmd._initialTiltY = parseFloat(tiltYSlider.value);
@@ -9641,6 +9907,12 @@ function applyInstantCommand(cmd, cam, modelMap, tiltXSlider, tiltYSlider, child
     if (cmd.type === 'move') {
         if (cmd._targetPosition) cam.position.copy(cmd._targetPosition);
         if (cmd._targetQuaternion) cam.quaternion.copy(cmd._targetQuaternion);
+        if (cmd.tiltX !== null && cmd.tiltX !== undefined) {
+            if (tiltXSlider) tiltXSlider.value = cmd._targetTiltX;
+            if (tiltYSlider) tiltYSlider.value = cmd._targetTiltY;
+            if (tiltXSlider) tiltXSlider.dispatchEvent(new Event('input'));
+            if (tiltYSlider) tiltYSlider.dispatchEvent(new Event('input'));
+        }
     } else if (cmd.type === 'tilt') {
         if (tiltXSlider) tiltXSlider.value = cmd._targetTiltX;
         if (tiltYSlider) tiltYSlider.value = cmd._targetTiltY;
@@ -9665,7 +9937,7 @@ function applyInstantCommand(cmd, cam, modelMap, tiltXSlider, tiltYSlider, child
             // 最終目標状態の設定を確定させる
             if (cmd.color !== null) {
                 targetModelInfo.displaySettings.color = cmd.color;
-                if ((targetModelInfo.isGLTFModel && targetModelInfo.hasGLTFMaterials) || targetModelInfo.isGaussianSplat || targetModelInfo.displaySettings.isSVGModel) {
+                if (targetModelInfo.isGLTFModel || !!targetModelInfo.originalMaterial?.userData.hoshizunaOriginalVertexColors || targetModelInfo.isGaussianSplat || targetModelInfo.displaySettings.isSVGModel) {
                     // glTFにはもともと複数の色があり得る。コマンダで色を指定したら
                     // カスタム色の制御に切り替えて、材質の上書きを確定させる。
                     targetModelInfo.useOriginalColor = false;
@@ -10710,6 +10982,12 @@ function applyInterpolatedCommand(cmd, t, cam, modelMap, tiltXSlider, tiltYSlide
     if (cmd.type === 'move') {
         cam.position.lerpVectors(cmd._initialPosition, cmd._targetPosition, t);
         cam.quaternion.slerpQuaternions(cmd._initialQuaternion, cmd._targetQuaternion, t);
+        if (cmd.tiltX !== null && cmd.tiltX !== undefined) {
+            if (tiltXSlider) tiltXSlider.value = cmd._initialTiltX + (cmd._targetTiltX - cmd._initialTiltX) * t;
+            if (tiltYSlider) tiltYSlider.value = cmd._initialTiltY + (cmd._targetTiltY - cmd._initialTiltY) * t;
+            if (tiltXSlider) tiltXSlider.dispatchEvent(new Event('input'));
+            if (tiltYSlider) tiltYSlider.dispatchEvent(new Event('input'));
+        }
     } else if (cmd.type === 'tilt') {
         const currentX = cmd._initialTiltX + (cmd._targetTiltX - cmd._initialTiltX) * t;
         const currentY = cmd._initialTiltY + (cmd._targetTiltY - cmd._initialTiltY) * t;
@@ -10738,7 +11016,7 @@ function applyInterpolatedCommand(cmd, t, cam, modelMap, tiltXSlider, tiltYSlide
             // 色（カラーの線形補間）と透明度（数値の線形補間）の計算
             if (cmd.color !== null) {
                 const currentColor = new THREE.Color().lerpColors(cmd._initialColor, cmd._targetColor, t);
-                if ((targetModelInfo.isGLTFModel && targetModelInfo.hasGLTFMaterials) || targetModelInfo.isGaussianSplat || targetModelInfo.displaySettings.isSVGModel) {
+                if (targetModelInfo.isGLTFModel || !!targetModelInfo.originalMaterial?.userData.hoshizunaOriginalVertexColors || targetModelInfo.isGaussianSplat || targetModelInfo.displaySettings.isSVGModel) {
                     // 元の色を使用していたglTFでは、マテリアルごとに元色→目標色を補間。
                     // 子ウィンドウにもこの係数をdisplaySettingsで送る。
                     if (cmd._startsWithGLTFOriginalColor) {
@@ -11469,7 +11747,7 @@ function updateVolumeDensityRangeHint(info) {
             if (modelInfo.displaySettings) {
                 // SVGモデルの場合、色関連のコントロールは無効化する
                 const isSVGModel = modelInfo.displaySettings.isSVGModel;
-                const isVertexColorMaterial = modelInfo.originalMaterial && modelInfo.originalMaterial.vertexColors === true;
+                const hasNativeVertexColors = !!modelInfo.originalMaterial?.userData.hoshizunaOriginalVertexColors;
 
                 if (modelInfo.isVolumeModel) {
                     const ds = modelInfo.displaySettings;
@@ -11574,17 +11852,17 @@ function updateVolumeDensityRangeHint(info) {
 
                 if (modelColorPicker) {
                     modelColorPicker.value = '#' + new THREE.Color(modelInfo.displaySettings.color).getHexString();
-                    modelColorPicker.disabled = isVertexColorMaterial || modelInfo.useOriginalColor || modelInfo.displaySettings.normals; 
+                    modelColorPicker.disabled = modelInfo.useOriginalColor || modelInfo.displaySettings.normals; 
                 }
                 if (useOriginalColorCheckbox) {
-                    useOriginalColorCheckbox.disabled = isVertexColorMaterial || (!isSVGModel && modelInfo.originalObjColor === null) || modelInfo.displaySettings.normals; 
+                    useOriginalColorCheckbox.disabled = (!hasNativeVertexColors && !isSVGModel && modelInfo.originalObjColor === null) || modelInfo.displaySettings.normals; 
                     useOriginalColorCheckbox.checked = modelInfo.useOriginalColor;
                 }
                 if (shininessSlider) {
                     shininessSlider.value = modelInfo.displaySettings.shininess;
-                    shininessSlider.disabled = isSVGModel || isVertexColorMaterial || modelInfo.displaySettings.normals;
+                    shininessSlider.disabled = isSVGModel || modelInfo.displaySettings.normals;
                 }
-                if (shininessValueDisplay && (isSVGModel || isVertexColorMaterial || modelInfo.displaySettings.normals)) shininessValueDisplay.textContent = 'N/A'; 
+                if (shininessValueDisplay && (isSVGModel || modelInfo.displaySettings.normals)) shininessValueDisplay.textContent = 'N/A'; 
                 else if (shininessValueDisplay) shininessValueDisplay.textContent = modelInfo.displaySettings.shininess.toFixed(0);
 
                 if (wireframeCheckbox) {
@@ -11848,6 +12126,21 @@ function calculateRecordingInfo(queue) {
 }
 
 
+// The recording canvas is independent from the child window CSS size.
+// Fixed-aspect projections fill their own output, without letterbox bars.
+function getDomeRecordingDimensions() {
+    const canvas = childWindow && !childWindow.closed ? childWindow.childCanvasEl : null;
+    const clientWidth = Math.max(1, canvas?.clientWidth || 512);
+    const clientHeight = Math.max(1, canvas?.clientHeight || 512);
+    const mode = Number(environmentSettings.projectionType) || 0;
+    const aspect = mode === 10 ? 4 : mode === 5 ? 2 : mode === 4 ? 4 / 3 :
+        (mode === 6 || mode === 11 || mode === 7 || mode === 8) ? clientWidth / clientHeight : 1;
+    const base = Math.max(256, Math.floor(Math.min(clientWidth, clientHeight)));
+    const width = aspect >= 1 ? Math.round(base * aspect) : base;
+    const height = aspect >= 1 ? base : Math.round(base / aspect);
+    return { width: Math.max(2,width), height: Math.max(2,height) };
+}
+
 /**
  * 録画確認ダイアログを表示する関数
  */
@@ -11876,28 +12169,10 @@ function showRecordConfirmationDialog() {
     expectedRecordingDurationMs = recordingInfo.durationMs;
 
 
-    let recordingDim = 512; // デフォルト値
-    if (childWindow && childWindow.childCanvasEl) { // 子ウィンドウとCanvas要素の存在を確認
-        const childCanvasWidth = childWindow.childCanvasEl.clientWidth;
-        const childCanvasHeight = childWindow.childCanvasEl.clientHeight;
-        recordingDim = Math.min(childCanvasWidth, childCanvasHeight);
-        // 解像度があまりに小さい場合は警告を出すか、最小値を設定することも検討できます
-        if (recordingDim < 256) { // 例: 最小解像度256px
-            console.warn(`Calculated recording dimension (${recordingDim}px) is very small. Consider resizing the dome view window.`);
-            // alert(`録画解像度が非常に小さいです (${recordingDim}px)。ドームビューウィンドウのサイズを大きくすることを検討してください。`);
-        }
-    } else {
-        console.warn('Child window or its canvas element not found. Using default recording dimension for dialog.');
-        // 子ウィンドウまたはそのCanvasが見つからない場合、環境設定のCubeCameraサイズから推定するなどのフォールバックも考えられるが、
-        // ここではユーザーにドームビューを開くよう促すのが適切かもしれません。
-        // ただし、既に上記のチェックでドームビューが開いていることは確認済みなので、childCanvasElの参照問題の可能性が高い。
-    }
-    const recordingWidth = recordingDim;
-    const recordingHeight = recordingDim;
-
+    const {width: recordingWidth, height: recordingHeight} = getDomeRecordingDimensions();
 
     if (confirmFrameRate) confirmFrameRate.textContent = RECORDING_FPS;
-    if (confirmResolution) confirmResolution.textContent = `${recordingWidth}x${recordingHeight}`; // 計算した解像度を表示
+    if (confirmResolution) confirmResolution.textContent = `${recordingWidth}x${recordingHeight}`; // 実際に録画するキャンバスの解像度
     if (confirmDuration) confirmDuration.textContent = (expectedRecordingDurationMs / 1000).toFixed(1);
 
     if (recordConfirmationOverlay) recordConfirmationOverlay.style.display = 'flex';
@@ -11937,126 +12212,77 @@ function initiateRecordingSequence() {
  * 録画を開始する関数
  */
 async function startRecording() {
-    if (!childWindow || childWindow.closed) {
-        console.error('Child window is not available for recording.');
+    if (!childWindow || childWindow.closed || !childWindow.childCanvasEl ||
+        typeof childWindow.setDomeRecordingSize !== 'function') {
         alert(i18n[currentLang].alert_record_dome_closed);
-        isRecording = false; // 録画状態をリセット
-        if (recordCommandButton) recordCommandButton.classList.remove('recording'); // ボタンの見た目を戻す
-        if (recordingProgressOverlay) recordingProgressOverlay.style.display = 'none'; // 進捗表示を隠す
-        return;
-    }
-    if (!childWindow.childCanvasEl) {
-        console.error('Child canvas element (childCanvasEl) is not available on childWindow object.');
-        //alert('ドームビューの描画領域の参照に失敗しました。子ウィンドウが正しく初期化されていないか、要素が見つかりません。');
-        alert(i18n[currentLang].alert_child_canvas_fail);
         isRecording = false;
         if (recordCommandButton) recordCommandButton.classList.remove('recording');
         if (recordingProgressOverlay) recordingProgressOverlay.style.display = 'none';
         return;
     }
-
-    isRecording = true; // ここで isRecording を true に設定
     recordedBlobs = [];
+    const target = getDomeRecordingDimensions();
+    const child = childWindow;
+    const canvas = child.childCanvasEl;
+    const resetRecorderState = () => {
+        if (!child.closed && typeof child.setDomeRecordingSize === 'function') {
+            try { child.setDomeRecordingSize(null); } catch (error) {
+                console.warn('Could not restore child output dimensions:', error);
+            }
+        }
+        if (recordingStream) {
+            recordingStream.getTracks().forEach(track => track.stop());
+            recordingStream = null;
+        }
+        isRecording = false;
+        if (recordCommandButton) recordCommandButton.classList.remove('recording');
+        if (recordingProgressOverlay) recordingProgressOverlay.style.display = 'none';
+    };
+    try {
+        // A synchronous renderer resize in the child also refreshes its camera
+        // and the equirectangular plane before captureStream is created.
+        child.setDomeRecordingSize(target.width, target.height);
+        recordingStream = canvas.captureStream(RECORDING_FPS);
+        let lastError = null;
+        mediaRecorder = null;
+        for (const mimeType of ['video/webm;codecs=vp9','video/webm;codecs=vp8',null]) {
+            try {
+                mediaRecorder = new MediaRecorder(recordingStream, mimeType ? {mimeType} : undefined);
+                break;
+            } catch (error) {
+                lastError = error;
+                console.warn('MediaRecorder initialization failed:', mimeType || 'default', error);
+            }
+        }
+        if (!mediaRecorder) throw lastError || new Error('MediaRecorder unavailable.');
+        mediaRecorder.ondataavailable = event => {
+            if (event.data && event.data.size > 0) recordedBlobs.push(event.data);
+        };
+        mediaRecorder.onstop = () => {
+            resetRecorderState();
+            mediaRecorder = null;
+            downloadRecordedVideo();
+        };
+        mediaRecorder.onerror = event => {
+            console.error('Recording error:', event.error || event);
+            showToast(i18n[currentLang].alert_rec_init_fail + ': ' +
+                (event.error?.message || 'MediaRecorder error'));
+        };
+        mediaRecorder.start();
+    } catch (error) {
+        console.error('Could not begin recording:', error);
+        alert(i18n[currentLang].alert_rec_init_fail + ': ' + (error?.message || String(error)));
+        resetRecorderState();
+        mediaRecorder = null;
+        return;
+    }
+    isRecording = true;
     recordingStartTime = performance.now();
     lastFrameCaptureTime = recordingStartTime;
-
-    const childCanvasClientWidth = childWindow.childCanvasEl.clientWidth;
-    const childCanvasClientHeight = childWindow.childCanvasEl.clientHeight;
-    const recordingDim = Math.min(childCanvasClientWidth, childCanvasClientHeight);
-
-    // 録画解像度があまりに小さい場合のフォールバックや警告
-    const minRecordingDim = 256; // 例えば最小256px
-    const actualRecordingDim = Math.max(recordingDim, minRecordingDim);
-    if (recordingDim < minRecordingDim) {
-        console.warn(`Recording dimension was too small (${recordingDim}px), adjusted to ${actualRecordingDim}px.`);
-        // alert(`録画解像度が小さすぎるため (${recordingDim}px)、${actualRecordingDim}px に調整して録画します。`);
-    }
-
-    const recordingWidth = actualRecordingDim;
-    const recordingHeight = actualRecordingDim;
-
-    const childCanvasToModify = childWindow.childCanvasEl;
-    const originalChildWidth = childCanvasToModify.width; // 属性値の幅を保存
-    const originalChildHeight = childCanvasToModify.height; // 属性値の高さを保存
-
-    // Canvasの描画バッファサイズ（属性値）を録画解像度に設定
-    childCanvasToModify.width = recordingWidth;
-    childCanvasToModify.height = recordingHeight;
-
-    if (typeof childWindow.onChildWindowResize === 'function') {
-        childWindow.onChildWindowResize(); // 子ウィンドウ内のリサイズ処理を呼び出し、カメラ等を調整
-    }
-    console.log(`Child canvas drawing buffer resized for recording to ${recordingWidth}x${recordingHeight}. Original attributes: ${originalChildWidth}x${originalChildHeight}`);
-
-    try {
-        recordingStream = childCanvasToModify.captureStream(RECORDING_FPS);
-        console.log('Successfully captured stream from child canvas el.');
-    } catch (e) {
-        console.error('Error capturing stream from child canvas el:', e);
-        //alert(`録画ストリームの取得に失敗しました: ${e.message}`);
-        alert(`${i18n[currentLang].alert_rec_stream_fail}: ${e.message}`);
-        isRecording = false;
-        childCanvasToModify.width = originalChildWidth; // サイズを元に戻す
-        childCanvasToModify.height = originalChildHeight;
-        if (typeof childWindow.onChildWindowResize === 'function') {
-            childWindow.onChildWindowResize();
-        }
-        if (recordCommandButton) recordCommandButton.classList.remove('recording');
-        if (recordingProgressOverlay) recordingProgressOverlay.style.display = 'none';
-        return;
-    }
-
-    const options = { mimeType: 'video/webm; codecs=vp9' };
-    try {
-        mediaRecorder = new MediaRecorder(recordingStream, options);
-    } catch (e1) {
-        console.warn(`MediaRecorder with ${options.mimeType} failed:`, e1.message, 'Trying with vp8.');
-        const optionsVP8 = { mimeType: 'video/webm; codecs=vp8' };
-        try {
-            mediaRecorder = new MediaRecorder(recordingStream, optionsVP8);
-        } catch (e2) {
-            console.error('MediaRecorder initialization failed for both vp9 and vp8:', e2.message);
-            //alert(`録画機能の初期化に失敗しました: ${e2.message}`);
-            alert(`${i18n[currentLang].alert_rec_init_fail}: ${e.message}`);
-            isRecording = false;
-            if (recordingStream) recordingStream.getTracks().forEach(track => track.stop());
-            childCanvasToModify.width = originalChildWidth; // サイズを元に戻す
-            childCanvasToModify.height = originalChildHeight;
-            if (typeof childWindow.onChildWindowResize === 'function') {
-                childWindow.onChildWindowResize();
-            }
-            if (recordCommandButton) recordCommandButton.classList.remove('recording');
-            if (recordingProgressOverlay) recordingProgressOverlay.style.display = 'none';
-            return;
-        }
-    }
-
-    mediaRecorder.onstop = (event) => {
-        console.log('Recorder stopped.');
-        // 録画終了後、子ウィンドウのCanvasサイズを元に戻す
-        childCanvasToModify.width = originalChildWidth;
-        childCanvasToModify.height = originalChildHeight;
-        if (typeof childWindow.onChildWindowResize === 'function') {
-            childWindow.onChildWindowResize();
-        }
-        console.log('Child canvas drawing buffer resized back to original attribute dimensions.');
-        downloadRecordedVideo(); // ダウンロード処理はサイズを戻した後が良いでしょう
-    };
-
-    mediaRecorder.ondataavailable = (event) => {
-        if (event.data && event.data.size > 0) {
-            recordedBlobs.push(event.data);
-        }
-    };
-
-    mediaRecorder.start();
-    console.log('MediaRecorder started, recording to blobs.');
-
     if (recordingProgressOverlay) recordingProgressOverlay.style.display = 'flex';
     if (recordCommandButton) recordCommandButton.classList.add('recording');
-    updateRecordingProgress(); // 進捗表示を初期化・開始
+    updateRecordingProgress();
 }
-
 
 /**
  * 録画を停止する関数
@@ -12242,16 +12468,13 @@ function onDisplayControlsChange() {
                  settings.opacity = parseFloat(opacitySlider.value);
                  settings.transparent = settings.opacity < 1;
                  settings.scriptOriginalColorBlend = null; // 編集タブ操作はスクリプトの一時色補間を解除
-                 modelInfo.useOriginalColor = modelInfo.hasGLTFMaterials
-                     ? useOriginalColorCheckbox.checked : !!modelInfo.originalMaterial.vertexColors;
+                 modelInfo.useOriginalColor = !!useOriginalColorCheckbox.checked;
                  applyModelDisplaySettings(modelInfo, childWindow);
                  updateEditControls(selectedModel);
                  return;
              }
 
              const isSVGModel = modelInfo.displaySettings.isSVGModel;
-             const isVertexColorMaterial = modelInfo.originalMaterial && modelInfo.originalMaterial.vertexColors === true;
-
              // Preserve the user chosen color even while original SVG colors are active.
              // Original-color is a preference, not a reason to overwrite settings.color.
              modelInfo.displaySettings.color = new THREE.Color(modelColorPicker.value).getHex();
@@ -12557,8 +12780,11 @@ function setAllModelsSide(enableDoubleSide) {
             if (modelInfo.displaySettings.isSVGModel) { 
                 modelInfo.mesh.traverse(child => {
                     if (child.isMesh && child.material && child.material.side !== undefined) {
-                        child.material.side = enableDoubleSide ? THREE.DoubleSide : THREE.FrontSide;
-                        child.material.needsUpdate = true;
+                        const nextSide = enableDoubleSide ? THREE.DoubleSide : THREE.FrontSide;
+                        if (child.material.side !== nextSide) {
+                            child.material.side = nextSide;
+                            child.material.needsUpdate = true;
+                        }
                     }
                 });
                 console.log(`Model ${modelInfo.id}: SVG child materials side set to ${enableDoubleSide ? 'DoubleSide' : 'FrontSide'}.`);
@@ -12567,7 +12793,7 @@ function setAllModelsSide(enableDoubleSide) {
                 if (modelInfo.displaySettings.normals) {
                     materialToUpdate = modelInfo.normalMaterial;
                     if (materialToUpdate.side !== undefined) {
-                        materialToUpdate.side = THREE.DoubleSide; // 法線マテリアルは常に両面
+                        materialToUpdate.side = enableDoubleSide ? THREE.DoubleSide : THREE.FrontSide;
                     }
                 } else {
                     materialToUpdate = modelInfo.originalMaterial;
@@ -12679,9 +12905,10 @@ function setAllModelsSide(enableDoubleSide) {
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>Hoshizuna (Dome Master)</title>
+                    <base href="${new URL('.', document.baseURI).href}">
                     <style>
-                        body { margin: 0; overflow: hidden; background-color: #333; /* 暗いグレーを基調に */ display: flex; flex-direction: column; justify-content: flex-start; align-items: center; } /* レイアウト調整 */
-                        canvas { display: block; width: 100%; height: 100%; } /* CSSで表示サイズを100%に設定 */
+                        body { margin: 0; width:100vw; height:100vh; overflow: hidden; background-color: #333; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; }
+                        canvas { display: block; width: 100vw; height: 100vh; flex: 0 0 auto; } /* CSS display independent of recording buffer */
                         #windowSizeDisplay {
                             position: absolute;
                             top: 10px;
@@ -12759,10 +12986,15 @@ function setAllModelsSide(enableDoubleSide) {
                     </div>
                     <div id="viewerLabel">Hoshizuna: Model Viewer for Dome<br/>Tasuku Yoshioka (Toyama Science Museum)</div>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>
+                    <script>if (!(window.THREE)) document.write('<script src="./lib/three.min.js"><\\/script>');<\/script>
                     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"><\/script>
+                    <script>if (!(window.THREE && window.THREE.STLLoader)) document.write('<script src="./lib/STLLoader.js"><\\/script>');<\/script>
                     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"><\/script>
+                    <script>if (!(window.THREE && window.THREE.OBJLoader)) document.write('<script src="./lib/OBJLoader.js"><\\/script>');<\/script>
                     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/SVGLoader.js"><\/script>
+                    <script>if (!(window.THREE && window.THREE.SVGLoader)) document.write('<script src="./lib/SVGLoader.js"><\\/script>');<\/script>
                     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"><\/script>
+                    <script>if (!(window.THREE && window.THREE.GLTFLoader)) document.write('<script src="./lib/GLTFLoader.js"><\\/script>');<\/script>
                     <script>
                         // Labels within the dome window track the parent UI language.
                         const childUiStrings = {
@@ -12789,6 +13021,12 @@ function setAllModelsSide(enableDoubleSide) {
                         let childSelectedModelId = null;
                         let childModelMessageQueue = Promise.resolve();
                         let childStructurePending = 0;
+                        function signalChildModelImport(id, name, success, error) {
+                            if (window.opener && !window.opener.closed) window.opener.postMessage({
+                                type: 'hoshizuna_child_model_status', modelId: id, modelName: name || '',
+                                success: !!success, reason: error ? String(error.message || error) : ''
+                            }, '/');
+                        }
                         // アニメーション中の更新は「最新の1件」を保持して描画フレームで反映する。
                         // STL/OBJにも適用し、GLB/glTFのロード待機中は更新を失わない。
                         const pendingChildModelUpdates = new Map();
@@ -12839,6 +13077,7 @@ function setAllModelsSide(enableDoubleSide) {
                         let parentCameraFov = 75;
                         let parentCameraAspect = 16 / 9;
                         let lastOutputLayoutKey = null;
+                        let childRecordingSize = null;
                         let parentCurrentMode = 'orbit'; // 親ウィンドウの初期モードと合わせる
 
                         // 子ウィンドウ側の光源参照 (親ウィンドウと同期)
@@ -12876,7 +13115,7 @@ function setAllModelsSide(enableDoubleSide) {
 
 
                         // 親と同じglTF関数を注入し、子のみに古い実装をコピーしない。
-                        ${[createSVGTexturedModel, applySVGDisplaySettings, renderSceneWithSVGVolumeLayers, inspectGLTFData, createWorldNormalMaterial, createGLTFModel, applyGLTFDisplaySettings, disposeGLTFModel,
+                        ${[createPlanarImageMaterial, createRasterTexturedModel, createSVGTexturedModel, applySVGDisplaySettings, renderSceneWithSVGVolumeLayers, inspectGLTFData, createWorldNormalMaterial, applyWorldNormalDisplaySettings, createGLTFModel, applyVertexColorPreference, applyGLTFDisplaySettings, disposeGLTFModel,
                             parseGaussianSplatData, gaussianSortWorkerMain, createGaussianSplatSeamShaders, createGaussianSplatModel, applyGaussianSplatDisplaySettings,
                             disposeGaussianSplatModel, parseHVolumeData, suggestHVolumeSliceWindow, createHVolumeModel,
                             resolveHVolumeStandardColorRange, applyHVolumeDisplaySettings, disposeHVolumeModel, renderSceneWithVolumeOcclusion].map(fn => fn.toString()).join('\n')}
@@ -13045,11 +13284,15 @@ function setAllModelsSide(enableDoubleSide) {
                                     gl_FragColor=cubeNetColor(vPosition.xy);
                                     return;
                                 }
-                                // 5: true 2:1 equirectangular; 6: stretch to child screen.
-                                if(projectionType == 5.0 || projectionType == 6.0) {
+                                // 5: full sphere at 2:1; 6: full sphere fitted to window;
+                                // 10/11: upper hemisphere only (horizon at bottom, zenith at top),
+                                // respectively 4:1 and fitted to the active output viewport.
+                                if(projectionType == 5.0 || projectionType == 6.0 || projectionType == 10.0 || projectionType == 11.0) {
                                     const float PI = 3.141592653589793;
                                     float longitude=vPosition.x*PI;
-                                    float latitude=vPosition.y*(0.5*PI);
+                                    float latitude=(projectionType == 10.0 || projectionType == 11.0)
+                                        ? (vPosition.y+1.0)*(0.25*PI)
+                                        : vPosition.y*(0.5*PI);
                                     float cl=cos(latitude);
                                     vec3 direction=vec3(cl*cos(longitude),cl*sin(longitude),sin(latitude));
                                     vec3 ray=applyPanoramaTilt(direction);
@@ -13610,20 +13853,21 @@ function setAllModelsSide(enableDoubleSide) {
                         }
 
                         // Output plane fits the child window without clipping or distorting
-                        // the image: fisheye 1:1, cube net 4:3, equirect 2:1 or screen,
+                        // the image: fisheye 1:1, cube net 4:3, equirect 2:1 / upper 4:1 or screen,
                         // perspective filling the child viewport with its own aspect ratio.
                         // The six camera render-target resolution is intentionally unaffected.
                         function updateDomeOutputLayout(force = false) {
                             if (!domeMasterMesh || !domeMasterCamera) return;
-                            const w=Math.max(1,window.innerWidth);
-                            const h=Math.max(1,window.innerHeight);
+                            const w=childRecordingSize ? childRecordingSize.width : Math.max(1,window.innerWidth);
+                            const h=childRecordingSize ? childRecordingSize.height : Math.max(1,window.innerHeight);
                             const windowAspect=w/h;
                             const mode=Number(environmentSettings.projectionType)||0;
                             let imageAspect=1;
                             if (mode===4) imageAspect=4/3;
                             else if (mode===5) imageAspect=2;
                             else if (mode===6) imageAspect=windowAspect;
-                            else if (mode===7 || mode===8) imageAspect=windowAspect;
+                            else if (mode===10) imageAspect=4;
+                            else if (mode===11 || mode===7 || mode===8) imageAspect=windowAspect;
                             const layoutKey=[w,h,mode,imageAspect.toFixed(6)].join('/');
                             if(!force && lastOutputLayoutKey===layoutKey) return;
                             lastOutputLayoutKey=layoutKey;
@@ -13775,83 +14019,46 @@ function setAllModelsSide(enableDoubleSide) {
 
                         // 子ウィンドウのリサイズ
                         function onChildWindowResize() {
-                            console.log('Child window resize event fired.');
-
-                            // requestAnimationFrameを使用して、ブラウザの次の描画前にサイズ更新をスケジュール
-                            requestAnimationFrame(() => {
-                                // canvas要素が取得できているか再度確認
-                                if (!childCanvas) {
-                                    childCanvas = document.getElementById('childThreeCanvas');
-                                    if (!childCanvas) {
-                                        console.error('Child: childCanvas not found in resize handler!');
-                                        return;
-                                    }
-                                }
-                                 // 表示要素が取得できているか再度確認
-                                 if (!windowSizeDisplay) {
-                                    windowSizeDisplay = document.getElementById('windowSizeDisplay');
-                                 }
-
-
-                                if (childRenderer && domeMasterCamera) {
-                                    // ウィンドウの実際のサイズを取得
-                                    const width = window.innerWidth;
-                                    const height = window.innerHeight;
-
-                                    // canvas要素のwidth/height属性を直接設定
-                                    childCanvas.width = width;
-                                    childCanvas.height = height;
-
-                                    console.log('Child: onChildWindowResize - Setting canvas attributes to: width=', width, 'height=', height);
-
-                                    // Update the main renderer size
-                                    childRenderer.setSize(width, height);
-
-                                    // Adjust the orthographic camera to maintain aspect ratio and fit the output
-                                    // We want the output plane (2x2) to fit within the window
-                                    const aspectRatio = width / height;
-
-                                    // Orthographic camera bounds should match the plane geometry (-1 to 1)
-                                    // and scale according to the aspect ratio to fit the window.
-                                    if (aspectRatio > 1) {
-                                        // Window is wider than tall, fit height to -1 to 1, scale width
-                                        domeMasterCamera.left = -aspectRatio;
-                                        domeMasterCamera.right = aspectRatio;
-                                        domeMasterCamera.top = 1;
-                                        domeMasterCamera.bottom = -1;
-                                    } else {
-                                        // Window is taller than wide, fit width to -1 to 1, scale height
-                                        domeMasterCamera.left = -1;
-                                        domeMasterCamera.right = 1;
-                                        domeMasterCamera.top = 1 / aspectRatio;
-                                        domeMasterCamera.bottom = -1 / aspectRatio;
-                                    }
-
-                                    domeMasterCamera.updateProjectionMatrix();
-                                    if (domeOverviewCamera) {
-                                        domeOverviewCamera.aspect = aspectRatio;
-                                        domeOverviewCamera.updateProjectionMatrix();
-                                        if (!domeOverviewOrbit.userAdjusted) resetDomeOverviewCamera();
-                                        else updateDomeOverviewCamera();
-                                    }
-                                    updateDomeOutputLayout(true);
-
-                                    console.log('Child: onChildWindowResize - Renderer and camera updated.');
-
-                                    // ウィンドウサイズとCanvas属性サイズを表示
-                                    if (windowSizeDisplay) {
-                                         windowSizeDisplay.textContent = (childLang === 'ja' ? 'ウィンドウ: ' : 'Window Size: ') + window.innerWidth + 'x' + window.innerHeight + (childLang === 'ja' ? ' | 描画領域: ' : ' | Canvas: ') + childCanvas.width + 'x' + childCanvas.height; // Canvas Attributesを表示
-                                    }
-
-                                } else {
-                                    console.log('Child: onChildWindowResize - Missing childRenderer or domeMasterCamera.');
-                                }
-                            });
+                            if (!childCanvas || !childRenderer || !domeMasterCamera) return;
+                            const width = childRecordingSize ? childRecordingSize.width : Math.max(1, window.innerWidth);
+                            const height = childRecordingSize ? childRecordingSize.height : Math.max(1, window.innerHeight);
+                            // Recording dimensions must not be overwritten by a window resize.
+                            // A pixel ratio of 1 ensures the requested video dimensions are exact.
+                            childRenderer.setPixelRatio(childRecordingSize ? 1 : window.devicePixelRatio);
+                            childRenderer.setSize(width, height, false);
+                            const aspectRatio = width / height;
+                            if (aspectRatio > 1) {
+                                domeMasterCamera.left = -aspectRatio;
+                                domeMasterCamera.right = aspectRatio;
+                                domeMasterCamera.top = 1;
+                                domeMasterCamera.bottom = -1;
+                            } else {
+                                domeMasterCamera.left = -1;
+                                domeMasterCamera.right = 1;
+                                domeMasterCamera.top = 1 / aspectRatio;
+                                domeMasterCamera.bottom = -1 / aspectRatio;
+                            }
+                            domeMasterCamera.updateProjectionMatrix();
+                            if (domeOverviewCamera) {
+                                domeOverviewCamera.aspect = aspectRatio;
+                                domeOverviewCamera.updateProjectionMatrix();
+                                if (!domeOverviewOrbit.userAdjusted) resetDomeOverviewCamera();
+                                else updateDomeOverviewCamera();
+                            }
+                            updateDomeOutputLayout(true);
+                            if (windowSizeDisplay) {
+                                windowSizeDisplay.textContent = (childLang === 'ja' ? 'ウィンドウ: ' : 'Window Size: ') +
+                                    window.innerWidth + 'x' + window.innerHeight + ' | Canvas: ' +
+                                    childCanvas.width + 'x' + childCanvas.height;
+                            }
                         }
-
-
-
-
+                        // Called synchronously by the parent before captureStream(). The
+                        // ordinary DOM window size remains unchanged during recording.
+                        window.setDomeRecordingSize = function(width, height) {
+                            childRecordingSize = Number.isInteger(width) && Number.isInteger(height) &&
+                                width >= 2 && height >= 2 ? {width, height} : null;
+                            onChildWindowResize();
+                        };
 
                         // Stutter monitor using submitted frames and, where supported,
                         // infrequent asynchronous GPU timer queries around the six-face render.
@@ -14061,7 +14268,8 @@ function setAllModelsSide(enableDoubleSide) {
                             uniforms.tiltY.value=currentTiltYRadians;
                             uniforms.projectionType.value=environmentSettings.projectionType;
                             uniforms.uMainCameraFov.value=parentCameraFov;
-                            uniforms.uChildWindowAspect.value=Math.max(1,window.innerWidth)/Math.max(1,window.innerHeight);
+                            uniforms.uChildWindowAspect.value=(childRecordingSize ? childRecordingSize.width : Math.max(1,window.innerWidth)) /
+                                (childRecordingSize ? childRecordingSize.height : Math.max(1,window.innerHeight));
                             uniforms.uWideCameraFov.value=Math.min(150,parentCameraFov+30);
                             uniforms.uShowCubeFaceBoundaries.value=environmentSettings.showCubeFaceBoundaries===true ? 1.0 : 0.0;
                             // About 1-2 screen pixels at the current viewport resolution.
@@ -14164,6 +14372,7 @@ async function addModelToChild(modelDataId, modelDataFileContent, modelDataPosit
                     transparent: modelDataDisplaySettings.transparent,
                     side: modelDataDisplaySettings.doubleSide ? THREE.DoubleSide : THREE.FrontSide
                 });
+                initialMaterial.userData.hoshizunaOriginalVertexColors = true;
             } else {
                 console.log("Child: OBJファイルで頂点カラーは検出されませんでした。");
                 initialMaterial = new THREE.MeshPhongMaterial({
@@ -14186,7 +14395,7 @@ async function addModelToChild(modelDataId, modelDataFileContent, modelDataPosit
         try {
             if (!childRenderer.capabilities.isWebGL2)
                 throw new Error('Volume rendering requires WebGL2.');
-            const volume = createHVolumeModel(modelDataFileContent);
+            const volume = createHVolumeModel(modelDataFileContent, childRenderer);
             newMesh = volume.mesh;
             initialMaterial = volume.initialMaterial;
             geometry = null;
@@ -14220,6 +14429,11 @@ async function addModelToChild(modelDataId, modelDataFileContent, modelDataPosit
             console.error('Child: GLB/glTF load failed:', error);
             return;
         }
+    } else if (['png', 'jpg', 'jpeg'].includes(modelDataFileType)) {
+        const imageInfo = await createRasterTexturedModel(modelDataFileContent, modelDataFileType, isGeometryCentered);
+        newMesh = imageInfo.mesh;
+        initialMaterial = imageInfo.material;
+        geometry = null;
     } else if (modelDataFileType === 'svg') {
         const svgInfo = await createSVGTexturedModel(modelDataFileContent, isGeometryCentered);
         newMesh = svgInfo.mesh;
@@ -14376,36 +14590,9 @@ function selectModelInChild(modelId) {
     if (childSelectedModelId !== null && childModels.has(childSelectedModelId)) {
         const previousModelInfo = childModels.get(childSelectedModelId);
         if(previousModelInfo && previousModelInfo.mesh && previousModelInfo.originalMaterial && previousModelInfo.displaySettings) {
-            // SVGモデルの場合は、子メッシュのマテリアルを操作
-            if (previousModelInfo.displaySettings.isSVGModel) {
-                applySVGDisplaySettings(previousModelInfo);
-            } else { // 通常のモデルの場合
-                // 選択解除時は元のマテリアルに戻す
-                if (previousModelInfo.displaySettings.normals) {
-                    previousModelInfo.mesh.material = previousModelInfo.normalMaterial;
-                } else {
-                    previousModelInfo.mesh.material = previousModelInfo.originalMaterial;
-                    const isVertexColorMaterial = previousModelInfo.originalMaterial.vertexColors === true;
-                    if (!isVertexColorMaterial) {
-                        if (previousModelInfo.useOriginalColor && previousModelInfo.originalObjColor !== null) {
-                            previousModelInfo.mesh.material.color.set(previousModelInfo.originalObjColor);
-                        } else {
-                            previousModelInfo.mesh.material.color.set(previousModelInfo.displaySettings.color);
-                        }
-                    }
-                    if (previousModelInfo.mesh.material.isMeshPhongMaterial || previousModelInfo.mesh.material.isMeshBasicMaterial) {
-                        if (previousModelInfo.mesh.material.isMeshPhongMaterial) {
-                            previousModelInfo.mesh.material.shininess = previousModelInfo.displaySettings.shininess;
-                        }
-                        previousModelInfo.mesh.material.wireframe = previousModelInfo.displaySettings.wireframe;
-                        previousModelInfo.mesh.material.opacity = previousModelInfo.displaySettings.opacity;
-                        previousModelInfo.mesh.material.transparent = previousModelInfo.displaySettings.transparent;
-                        previousModelInfo.mesh.material.needsUpdate = true;
-                        previousModelInfo.mesh.material.side = previousModelInfo.displaySettings.doubleSide ? THREE.DoubleSide : THREE.FrontSide;
-                    }
-                    console.log('Child: Deselected previous model in child scene.');
-                }
-            }
+            // Restore the original/forced color and materials for all child meshes.
+            // OBJ groups do not have a .material on the group node itself.
+            updateModelDisplayInChild(previousModelInfo.id, previousModelInfo.displaySettings);
         } else {
             console.warn('Child: Previous model info or materials/display settings not found for deselection in child scene.');
         }
@@ -14475,14 +14662,8 @@ function deselectModelInChild() {
                     setMaterialToMesh(deselectedModelInfo.mesh, deselectedModelInfo.originalMaterial);
 
                     const mat = deselectedModelInfo.originalMaterial;
-                    const isVertexColorMaterial = mat.vertexColors === true;
-                    if (!isVertexColorMaterial) {
-                        if (deselectedModelInfo.useOriginalColor && deselectedModelInfo.originalObjColor !== null) {
-                            mat.color.set(deselectedModelInfo.originalObjColor);
-                        } else {
-                            mat.color.set(deselectedModelInfo.displaySettings.color);
-                        }
-                    }
+                    applyVertexColorPreference(mat, deselectedModelInfo.useOriginalColor,
+                        deselectedModelInfo.displaySettings.color, deselectedModelInfo.originalObjColor);
 
                     if (mat.isMeshPhongMaterial || mat.isMeshBasicMaterial) {
                         if (mat.isMeshPhongMaterial) {
@@ -14554,21 +14735,21 @@ function updateModelDisplayInChild(modelId, displaySettings) {
     }
     if (!info.originalMaterial) return;
     if (ds.normals) {
+        applyWorldNormalDisplaySettings(info);
         setMaterialToMesh(info.mesh, info.normalMaterial);
         return;
     }
     setMaterialToMesh(info.mesh, info.originalMaterial);
     const mat = info.originalMaterial;
-    if (!mat.vertexColors && mat.color) {
-        mat.color.set(info.useOriginalColor && info.originalObjColor !== null
-            ? info.originalObjColor : ds.color);
-    }
+    applyVertexColorPreference(mat, info.useOriginalColor, ds.color, info.originalObjColor);
+    const nextSide = ds.doubleSide ? THREE.DoubleSide : THREE.FrontSide;
+    const recompile = mat.wireframe !== ds.wireframe || mat.transparent !== ds.transparent || mat.side !== nextSide;
     if (mat.isMeshPhongMaterial) mat.shininess = ds.shininess;
     if (mat.wireframe !== undefined) mat.wireframe = ds.wireframe;
     if (mat.opacity !== undefined) mat.opacity = ds.opacity;
     if (mat.transparent !== undefined) mat.transparent = ds.transparent;
-    if (mat.side !== undefined) mat.side = ds.doubleSide ? THREE.DoubleSide : THREE.FrontSide;
-    mat.needsUpdate = true;
+    if (mat.side !== undefined) mat.side = nextSide;
+    if (recompile) mat.needsUpdate = true;
 }
 
 // 子ウィンドウ背景切替。ロード途中の古い画像が後から復活しないよう世代番号で管理。
@@ -14747,16 +14928,30 @@ function flushPendingChildModelUpdates() {
                                     if (data.type === 'stl_data') {
                                         Array.from(childModels.keys()).forEach(id => removeModelFromChild(id));
                                         for (const m of data.models || []) {
-                                            await addModelToChild(m.id, m.fileData, m.position, m.quaternion,
-                                                m.scale, m.display, m.fileType, m.name,
-                                                m.display.isGeometryCentered, m.originalObjColor, m.useOriginalColor);
+                                            try {
+                                                await addModelToChild(m.id, m.fileData, m.position, m.quaternion,
+                                                    m.scale, m.display, m.fileType, m.name,
+                                                    m.display.isGeometryCentered, m.originalObjColor, m.useOriginalColor);
+                                                if (!childModels.has(m.id)) throw new Error('Model was not created in Dome View.');
+                                                signalChildModelImport(m.id, m.name, true);
+                                            } catch (error) {
+                                                console.error('Dome model import failed:', m.name, error);
+                                                signalChildModelImport(m.id, m.name, false, error);
+                                            }
                                         }
                                     } else if (data.type === 'add_model') {
                                         const m = data.modelData;
                                         if (!m) return;
-                                        await addModelToChild(m.id, m.fileData, m.position, m.quaternion,
-                                            m.scale, m.display, m.fileType, m.name,
-                                            m.display.isGeometryCentered, m.originalObjColor, m.useOriginalColor);
+                                        try {
+                                            await addModelToChild(m.id, m.fileData, m.position, m.quaternion,
+                                                m.scale, m.display, m.fileType, m.name,
+                                                m.display.isGeometryCentered, m.originalObjColor, m.useOriginalColor);
+                                            if (!childModels.has(m.id)) throw new Error('Model was not created in Dome View.');
+                                            signalChildModelImport(m.id, m.name, true);
+                                        } catch (error) {
+                                            console.error('Dome model import failed:', m.name, error);
+                                            signalChildModelImport(m.id, m.name, false, error);
+                                        }
                                     } else {
                                         removeModelFromChild(data.modelId);
                                     }
@@ -14954,7 +15149,17 @@ function flushPendingChildModelUpdates() {
             // この画面が生成した、同一オリジンのドームビューからの通知のみ受け付ける。
             if (!childWindow || childWindow.closed || event.source !== childWindow || event.origin !== window.location.origin) return;
             const data = event.data;
-            if (!data || typeof data !== 'object' || Array.isArray(data) || data.type !== 'child_ready') return;
+            if (!data || typeof data !== 'object' || Array.isArray(data)) return;
+            if (data.type === 'hoshizuna_child_model_status') {
+                if (!data.success) {
+                    console.error('Dome View model import failed:', data.modelName, data.reason);
+                    showToast((currentLang === 'ja' ? 'ドームビューへのモデル追加に失敗: ' :
+                        'Dome View model import failed: ') + (data.modelName || data.modelId) +
+                        (data.reason ? ' — ' + data.reason : ''), 9000);
+                }
+                return;
+            }
+            if (data.type !== 'child_ready') return;
             console.log('Main: Received message:', data.type);
 
             if (data.type === 'child_ready') {
