@@ -1,5 +1,7 @@
 # Hoshizuna: Model Viewer for Dome
 
+![hoshizuna](docs/hero.png)
+
 A lightweight, browser-based 3D model viewer designed for projecting 3D models in planetariums and dome theaters. It allows anyone to easily run 3D presentations directly in a web browser without complex configurations.
 
 [Live Demo](https://tasukuyoshioka.github.io/hoshizuna/) | [Detailed Guide (Notion)](https://atlantic-net-15f.notion.site/How-to-Use-Hoshizuna-372ecdd4ea4c80ddb18df8ad78f62e18)
