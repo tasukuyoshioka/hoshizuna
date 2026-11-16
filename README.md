@@ -47,6 +47,7 @@ obj(MyFossilModel) {pos: 0.0, 10.0, 0.0; rot: 0, 90, 0; size: 2.0; dur: 3; ease-
 ```
 
 ## Update History
+- **v1.76 (Nov. 2026)**: Added support for solar system celestial bodies, including orbital visualization and time-based positioning.
 - **v1.76 (Nov. 2026)**: Added support for DICOM and headerless RAW volume data.
 - **v1.75 (Nov. 2026)**: Added an outer-edge mask and new projection modes for Dome View, along with support for GLB/glTF (.glb/.gltf) and 3D Gaussian Splatting (.ply/.splat) files.
 - **v1.71 (June 2026)**: Added tilt adjustment with gamepads.
